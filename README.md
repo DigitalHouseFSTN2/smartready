@@ -6,4 +6,5 @@ Organización
 ./assets/img -> imágenes del Proyecto
 ./assets/lib -> bibliotecas o fuentes framework,etc.
 
-validar cambio de master
+
+var desde Atom -> Github
