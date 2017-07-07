@@ -6,4 +6,4 @@ Organización
 ./assets/img -> imágenes del Proyecto
 ./assets/lib -> bibliotecas o fuentes framework,etc.
 
-Ver que actualiza branch gga013ar
+validar cambio de master
