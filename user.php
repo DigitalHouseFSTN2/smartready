@@ -1,23 +1,6 @@
 <?php
-  require_once "./assets/src/Libreries.php"; // contiene html de lib. que se colocan al final del body.
-  require_once "./assets/src/validaciones.php";
-  require_once "./assets/src/usuarios.php";
-
-  var_dump($_REQUEST);
-  $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
-  if ($fueCompletado){
-      $rslt = usuarioAccess($_REQUEST['email'], $_REQUEST['password']);
-      if ( !$rslt )
-      {
-        echo "<br> usuario válido <br>" ;
-      } else
-      {
-
-          echo "<br> usuario inválido <br>";
-      }
-  }
-  // Si fue completado.. validar y si es válido.. acceder modo 'IN' .. habría que incorporar el uso de websession.. formato json.
-  // Si fue completado y hay errores, informar el error de logín.
+  require_once "./assets/src/nav.php";
+  require_once "./assets/src/Libreries.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,21 +81,15 @@
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-
-              <form id="loginform"  action='login.php' method='post' class="form-horizontal" role="form">
-
-                  <input type='hidden' name='submitted' id='submitted' value='1'/>
-
+              <form id="loginform" class="form-horizontal" role="form">
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                      <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="email">
+                      <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
                   </div>
-
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="login-password" type="password" class="form-control" name="password" placeholder="clave">
                   </div>
-
                   <div class="input-group">
                     <div class="checkbox">
                       <label>
@@ -120,23 +97,20 @@
                       </label>
                     </div>
                   </div>
-
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <input id="btn-login" class="btn btn-success" type='submit' value='Acceder' />
+                        <a id="btn-login" href="#" class="btn btn-success">Acceder  </a>
                       </div>
                   </div>
-
                   <div class="form-group">
                       <div class="col-md-12 control">
                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                           Si en verdad no tienes una cuenta!
-                          <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()"><strong>Registrate aquí</strong></a>
+                          <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">Registrate aquí</a>
                         </div>
                       </div>
                   </div>
-
                 </form>
             </div>
           </div>

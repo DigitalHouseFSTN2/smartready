@@ -2,10 +2,10 @@
 
 require_once "validaciones.php";
 
-function guardarUsuario($nombre, $apellido, $email, $usuario, $password)
+function usuarioSet($nombre, $apellido, $email, $password)
 {
     // Validar!
-    $errores = validarUsuario($nombre, $apellido, $email, $usuario, $password);
+    $errores = validarUsuario($nombre, $apellido, $email, $password);
 
     if (empty($errores)) {
         // No hubo errores
@@ -16,7 +16,6 @@ function guardarUsuario($nombre, $apellido, $email, $usuario, $password)
             'name'      => $nombre,
             'lastname'   => $apellido,
             'email'     => $email,
-            'user'      => $usuario,
             'password'  => $password
         ]);
 
@@ -29,8 +28,58 @@ function guardarUsuario($nombre, $apellido, $email, $usuario, $password)
         return $errores;
     }
 }
+function usuarioAccess($mail,$password)
+{
+  echo $mail . ' y clave ' . $password;
 
-function validarUsuario($nombre, $apellido, $email, $usuario, $password)
+  if (!empty($mail))
+  {
+
+    // buscar archivo json.. recorrerlo hasta encontrar mail.
+      $filecuentas = @fopen("cuentasUsuarios.txt", "r");
+      var_dump($filecuentas);
+      if ($filecuentas)
+      {
+        while (($linea = fgets($filecuentas, 4096)) !== false) {
+          echo "<br> " . $linea . 'linea' ;
+
+          $regUsuario = json_decode($linea, true);
+          echo "<br> array usuario <br>"; 
+          var_dump($regUsuario);
+
+          if (trim($regUsuario['mail']) == trim($mail))
+          {
+            echo 'ok';
+          }else
+          {
+            echo "Error: usuario o clave inválidos";
+            return "Error: usuario o clave inválidos";
+          }
+          echo $linea;
+          echo "<br>";
+          // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
+          // luego comparar con la clave.
+        }
+        if (!feof($fileCuentas)) {
+          echo "Error: fallo inesperado de fgets()\n";
+        }
+        fclose($fileCuentas);
+      }
+
+    // convertir password a
+    if (!empty($password))
+    {
+
+    }else
+    {
+      return "Error: Debe ingresar una clave";
+    }
+  } else
+  {
+      return "Error : Debe ingresar un email";
+  }
+}
+function usuarioVal($nombre, $apellido, $email, $password)
 {
     $errores = [];
 
@@ -44,10 +93,6 @@ function validarUsuario($nombre, $apellido, $email, $usuario, $password)
 
     if (! validarEmail($email)) {
         $errores['email'] = "El mail ingresado no es valido" ;
-    }
-
-    if (! validarNombreDeUsuario($usuario)) {
-        $errores['username'] = "El username ingresado no es valido";
     }
 
     if (! validarPassword($password)) {
