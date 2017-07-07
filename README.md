@@ -1,5 +1,5 @@
 Proyecto SmartReady
-
+a ver el cambio
 Organización
 . solo archivos php
 ./assets -> Todo el contenido necesario../assets/src -> los php extras, funciones, validaciones.
