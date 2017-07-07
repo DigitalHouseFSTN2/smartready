@@ -1,4 +1,5 @@
 <?php
+  require_once "./assets/src/nav.php"; // contiene html del nav para que sea el mismo en todas las páginas
   require_once "./assets/src/Libreries.php"; // contiene html de lib. que se colocan al final del body.
   require_once "./assets/src/validaciones.php";
   require_once "./assets/src/usuarios.php";

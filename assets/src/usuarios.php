@@ -28,32 +28,25 @@ function usuarioSet($nombre, $apellido, $email, $password)
         return $errores;
     }
 }
-function usuarioAccess($mail,$password)
-{
+function usuarioAccess($mail,$password)  {
   echo $mail . ' y clave ' . $password;
 
-  if (!empty($mail))
-  {
+  if (!empty($mail) && !empty($password))  {
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("cuentasUsuarios.txt", "r");
       var_dump($filecuentas);
-      if ($filecuentas)
-      {
+      if ($filecuentas) {
         while (($linea = fgets($filecuentas, 4096)) !== false) {
           echo "<br> " . $linea . 'linea' ;
 
           $regUsuario = json_decode($linea, true);
-          echo "<br> array usuario <br>"; 
+          echo "<br> array usuario <br>";
           var_dump($regUsuario);
 
           if (trim($regUsuario['mail']) == trim($mail))
           {
             echo 'ok';
-          }else
-          {
-            echo "Error: usuario o clave inválidos";
-            return "Error: usuario o clave inválidos";
           }
           echo $linea;
           echo "<br>";
@@ -64,19 +57,12 @@ function usuarioAccess($mail,$password)
           echo "Error: fallo inesperado de fgets()\n";
         }
         fclose($fileCuentas);
+      } else {
+        return "Ups!!! detectamos un inconveniente de conección intente mas tarde"; 
       }
-
-    // convertir password a
-    if (!empty($password))
-    {
-
-    }else
-    {
-      return "Error: Debe ingresar una clave";
-    }
-  } else
-  {
-      return "Error : Debe ingresar un email";
+  }
+  else  {
+      return "Debe informar usuario y clave";
   }
 }
 function usuarioVal($nombre, $apellido, $email, $password)
