@@ -4,18 +4,22 @@
   require_once "./assets/src/validaciones.php";
   require_once "./assets/src/usuarios.php";
 
-  var_dump($_REQUEST);
+  // var_dump($_REQUEST);
   $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
   if ($fueCompletado){
       $rslt = usuarioAccess($_REQUEST['email'], $_REQUEST['password']);
       if ( !$rslt )
       {
         echo "<br> usuario válido <br>" ;
+        $modo = 'IN';
+        // Guardar en session usuario y modo
       } else
       {
-
+         $modo = 'OUT';
           echo "<br> usuario inválido <br>";
       }
+  } else {
+    $modo = 'OUT';
   }
   // Si fue completado.. validar y si es válido.. acceder modo 'IN' .. habría que incorporar el uso de websession.. formato json.
   // Si fue completado y hay errores, informar el error de logín.
@@ -85,7 +89,7 @@
 	  </header>
 	  <nav class="navbar navbar-inverse">
 		  <?php
-        echo navGet('OUT');
+        echo navGet($modo);
       ?>
 
 		</nav>

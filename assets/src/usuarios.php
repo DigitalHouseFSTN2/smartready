@@ -33,14 +33,16 @@ function usuarioAccess($mail,$password)  {
 
   if (!empty($mail) && !empty($password))  {
 
-    // buscar archivo json.. recorrerlo hasta encontrar mail.
+      // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("cuentasUsuarios.txt", "r");
       var_dump($filecuentas);
       if ($filecuentas) {
         while (($linea = fgets($filecuentas, 4096)) !== false) {
-          echo "<br> " . $linea . 'linea' ;
 
+          echo "<br> " . $linea . 'linea <br>' ;
           $regUsuario = json_decode($linea, true);
+          echo "<br>";
+          
           echo "<br> array usuario <br>";
           var_dump($regUsuario);
 
@@ -53,12 +55,12 @@ function usuarioAccess($mail,$password)  {
           // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
           // luego comparar con la clave.
         }
-        if (!feof($fileCuentas)) {
+        if (!feof($filecuentas)) {
           echo "Error: fallo inesperado de fgets()\n";
         }
-        fclose($fileCuentas);
+        fclose($filecuentas);
       } else {
-        return "Ups!!! detectamos un inconveniente de conección intente mas tarde"; 
+        return "Ups!!! detectamos un inconveniente de conección intente mas tarde";
       }
   }
   else  {
