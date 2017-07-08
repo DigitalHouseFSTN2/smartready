@@ -147,7 +147,7 @@ echo "Session variables are set.";
                       <div class="col-md-12 control">
                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                           Si en verdad no tienes una cuenta!
-                          <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()"><strong>Registrate aquí</strong></a>
+                          <a href="register.php" onClick="$('#loginbox').hide(); $('#signupbox').show()"><strong>Registrate aquí</strong></a>
                         </div>
                       </div>
                   </div>
@@ -164,7 +164,7 @@ echo "Session variables are set.";
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-              <form id="loginform" class="form-horizontal" role="form">
+              <form id="loginform"  action='login.php' method='post' class="form-horizontal" role="form">
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                       <?php
@@ -186,6 +186,10 @@ echo "Session variables are set.";
                     ?>
                   </div>
                   <div style="margin-bottom: 25px" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                      <input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">
+                  </div>
+                  <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="register-password" type="password" class="form-control" name="password" placeholder="Una clave que puedas repetir">
                   </div>
@@ -203,14 +207,15 @@ echo "Session variables are set.";
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <a id="btn-login" href="#" class="btn btn-success">Registrarse  </a>
+                        <input id="btn-login" class="btn btn-success" type='submit' value='Registrarse' />
                       </div>
+
                   </div>
                   <div class="form-group">
                       <div class="col-md-12 control">
                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                           Tienes una cuenta y llegaste hasta aquí por curioso!
-                          <a href="#" onClick="$('#loginbox').show(); $('#signupbox').hide()">Vuelve desde aquí</a>
+                          <a href="#" onClick="$('#loginbox').show(); $('#signupbox').hide()"><strong>Vuelve desde aquí</strong></a>
                         </div>
                       </div>
                   </div>
