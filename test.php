@@ -1,5 +1,15 @@
 <?php
   require_once "./assets/src/nav.php";
+  $jsonUser = json_encode([
+      'name'      => "ricardo",
+      'lastname'   => "perez",
+      'email'     => "gassmanngustavo@gmail.com",
+      'password'  => "7890"
+  ]);
+
+  $fp = fopen("cuentasUsuarios.json", "a+");
+  $resultado = fwrite($fp, $jsonUser . PHP_EOL);
+  fclose($fp);
 ?>
 
 <!DOCTYPE html>
