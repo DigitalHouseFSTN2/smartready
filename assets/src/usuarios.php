@@ -19,52 +19,64 @@ function usuarioSet($nombre, $apellido, $email, $password)
             'password'  => $password
         ]);
 
-        $fp = fopen("users.json", "a+");
+        $fp = fopen("cuentasUsuarios.json", "a+");
         $resultado = fwrite($fp, $jsonUser . PHP_EOL);
         fclose($fp);
+
+        $_SESSION["name"] = $regUsuario["name"];
+        $_SESSION["email"] = $regUsuario["email"];
+        $_SESSION["lastname"] = $regUsuario["lastname"];
         return $resultado;
     } else {
         // Hubo errores
         return $errores;
     }
 }
+
 function usuarioAccess($mail,$password)  {
-  echo $mail . ' y clave ' . $password;
+  echo "Entra con usuario->" . $mail . ' y clave->' . $password . "<br>";
 
   if (!empty($mail) && !empty($password))  {
-
       // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $filecuentas = @fopen("cuentasUsuarios.txt", "r");
+      $filecuentas = @fopen("cuentasUsuarios.json", "r");
+
+      echo "Lectura archivo <br>";
       var_dump($filecuentas);
+
       if ($filecuentas) {
         while (($linea = fgets($filecuentas, 4096)) !== false) {
 
-          echo "<br> " . $linea . 'linea <br>' ;
+          echo "Linea" . $linea . '<br>' ;
           $regUsuario = json_decode($linea, true);
-          echo "<br>";
-          
-          echo "<br> array usuario <br>";
-          var_dump($regUsuario);
 
-          if (trim($regUsuario['mail']) == trim($mail))
+          /*echo "array usuario ";
+          var_dump($regUsuario);
+          echo "<br>";*/
+
+          if (trim($regUsuario['email']) == trim($mail))
           {
-            echo 'ok';
+
+            $_SESSION["name"] = $regUsuario["name"];
+            $_SESSION["email"] = $regUsuario["email"];
+            $_SESSION["lastname"] = $regUsuario["lastname"];
+            return 1;
+            // echo 'Usuario ok <br>';
           }
-          echo $linea;
-          echo "<br>";
           // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
           // luego comparar con la clave.
         }
         if (!feof($filecuentas)) {
-          echo "Error: fallo inesperado de fgets()\n";
+          return 0;
+          // echo "Error: fallo inesperado de fgets()\n";
         }
         fclose($filecuentas);
       } else {
+        echo "Ups!!! de file";
         return "Ups!!! detectamos un inconveniente de conección intente mas tarde";
       }
   }
   else  {
-      return "Debe informar usuario y clave";
+      return 0; // "Debe informar usuario y clave";
   }
 }
 function usuarioVal($nombre, $apellido, $email, $password)
