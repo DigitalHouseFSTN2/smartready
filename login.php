@@ -8,18 +8,22 @@
   $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
   if ($fueCompletado){
       $rslt = usuarioAccess($_REQUEST['email'], $_REQUEST['password']);
-      if ( !$rslt )
+      echo "<br> resultado usaurioAcces " . $rslt . "<br>";
+      if ( $rslt )
       {
         echo "<br> usuario válido <br>" ;
-        $modo = 'IN';
+
         // Guardar en session usuario y modo
       } else
       {
-         $modo = 'OUT';
+
           echo "<br> usuario inválido <br>";
       }
   } else {
-    $modo = 'OUT';
+
+    // Set session variables
+
+echo "Session variables are set.";
   }
   // Si fue completado.. validar y si es válido.. acceder modo 'IN' .. habría que incorporar el uso de websession.. formato json.
   // Si fue completado y hay errores, informar el error de logín.
@@ -89,7 +93,7 @@
 	  </header>
 	  <nav class="navbar navbar-inverse">
 		  <?php
-        echo navGet($modo);
+        echo navGet();
       ?>
 
 		</nav>
@@ -110,7 +114,13 @@
 
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                      <input id="login-email" type="text" class="form-control" name="email" value="" placeholder="email">
+                      <?php
+                        if($fueCompletado){
+                        echo '<input id="login-email" type="text" class="form-control" name="email" value="' . $_REQUEST["email"] . '" placeholder="email">';
+                      } else {
+                        echo '<input id="login-email" type="text" class="form-control" name="email" value="" placeholder="email">';
+                      }
+                      ?>
                   </div>
 
                   <div style="margin-bottom: 25px" class="input-group">
@@ -137,7 +147,7 @@
                       <div class="col-md-12 control">
                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                           Si en verdad no tienes una cuenta!
-                          <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()"><strong>Registrate aquí</strong></a>
+                          <a href="register.php" onClick="$('#loginbox').hide(); $('#signupbox').show()"><strong>Registrate aquí</strong></a>
                         </div>
                       </div>
                   </div>
@@ -154,14 +164,30 @@
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-              <form id="loginform" class="form-horizontal" role="form">
+              <form id="loginform"  action='login.php' method='post' class="form-horizontal" role="form">
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                      <input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">
+                      <?php
+                        if($fueCompletado && isset($_REQUEST['username'])){
+                          echo '<input id="register-username" type="text" class="form-control" name="username" value="' . $_REQUEST['username'] . '" placeholder="Cual es tu nombre?">';
+                        } else {
+                          echo '<input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">';
+                        }
+                      ?>
                   </div>
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                    <input id="register-email" type="text" class="form-control" name="email" placeholder="Ingresa tu e-mail">
+                    <?php
+                      if($fueCompletado && isset($_REQUEST['email'])){
+                        echo '<input id="register-email" type="text" class="form-control" name="email" value="' . $_REQUEST['email'] .  '" placeholder="Ingresa tu e-mail">';
+                      } else {
+                        echo  '<input id="register-email" type="text" class="form-control" name="email" placeholder="Ingresa tu e-mail">';
+                      }
+                    ?>
+                  </div>
+                  <div style="margin-bottom: 25px" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                      <input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">
                   </div>
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -181,14 +207,15 @@
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <a id="btn-login" href="#" class="btn btn-success">Registrarse  </a>
+                        <input id="btn-login" class="btn btn-success" type='submit' value='Registrarse' />
                       </div>
+
                   </div>
                   <div class="form-group">
                       <div class="col-md-12 control">
                         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
                           Tienes una cuenta y llegaste hasta aquí por curioso!
-                          <a href="#" onClick="$('#loginbox').show(); $('#signupbox').hide()">Vuelve desde aquí</a>
+                          <a href="#" onClick="$('#loginbox').show(); $('#signupbox').hide()"><strong>Vuelve desde aquí</strong></a>
                         </div>
                       </div>
                   </div>

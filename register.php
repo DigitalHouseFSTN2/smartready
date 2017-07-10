@@ -1,6 +1,18 @@
 <?php
   require_once "./assets/src/nav.php";
   require_once "./assets/src/Libreries.php";
+  require_once "./assets/src/usuarios.php";
+
+  $fueCompletado = isset($_REQUEST['submitted']);
+  if($fueCompletado){
+    $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'] );
+    var_dump($resultado); 
+    if( is_array($resultado) && !empty($resultado)){
+      // Hubo errores
+    } else {
+      // no hubo errores.
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,10 +93,23 @@
               </div>
               <div style="padding-top:30px" class="panel-body" >
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                <form id="loginform" class="form-horizontal" role="form">
+                <form id="loginform" action='register.php' method='post' class="form-horizontal" role="form">
+
+                    <input type='hidden' name='submitted' id='submitted' value='1'/>
+
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">
+                        <?php
+                          if ( $fueCompletado && isset( $_REQUEST['username'])){
+                            echo '<input id="register-username" type="text" class="form-control" name="username" value="' . $_REQUEST['username'] . '" placeholder="Cual es tu nombre?">';
+                          } else {
+                            echo '<input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">';
+                          }
+                        ?>
+                    </div>
+                    <div style="margin-bottom: 25px" class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
+                        <input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
@@ -108,7 +133,15 @@
                     <div style="margin-top:10px" class="form-group">
                         <!-- Button -->
                         <div class="col-sm-12 controls">
-                          <a id="btn-login" href="#" class="btn btn-success">Registrarse  </a>
+                          <input id="btn-login" class="btn btn-success" type='submit' value='Registrarse' />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 control">
+                          <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
+                            Tienes una cuenta y llegaste hasta aquí por curioso!
+                            <a href="login.php" onClick="$('#loginbox').show(); $('#signupbox').hide()"><strong>Vuelve desde aquí</strong></a>
+                          </div>
                         </div>
                     </div>
                   </form>

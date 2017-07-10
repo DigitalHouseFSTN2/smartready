@@ -1,5 +1,5 @@
 <?php
-function navGet($modo)
+function navGet()
 {
     // Validar!
 
@@ -23,12 +23,15 @@ function navGet($modo)
     $navHtml = $navHtml . '           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Quienes somos <span class="caret"></span></a>';
     $navHtml = $navHtml . '           <ul class="dropdown-menu">';
     $navHtml = $navHtml . '             <li><a href="home.php">Acercad de</a></li>';
-    $navHtml = $navHtml . '             <li role="separator" class="divider"></li>';
-    if($modo=='OUT'||$modo==null){
-
+    if(empty($_SESSION['email'])){
+      
+      $navHtml = $navHtml . '         <li role="separator" class="divider"></li>';
       $navHtml = $navHtml . '         <li><a href="login.php">Ingreso</a></li>';
       $navHtml = $navHtml . '         <li><a href="register.php">Registracion</a></li>';
+    } else {
+      $navHtml = $navHtml . '         <li><a href="user.php">Usuario</a></li>';
     }
+
 
     $navHtml = $navHtml . '       </ul>';
     $navHtml = $navHtml . '     </li>';
