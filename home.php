@@ -1,6 +1,5 @@
 <?php
-  require_once "./assets/src/nav.php";
-  require_once "./assets/src/Libreries.php";
+  // require_once "./assets/src/nav.php";
 
   session_start();
 
@@ -9,7 +8,7 @@
   } else {
     $_SESSION['email']='';
   }
-  
+
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +71,7 @@
 	  </header>
 	  <nav class="navbar navbar-inverse">
       <?php
-		    echo navGet( );
+        include("assets/src/nav.php");
       ?>
 		</nav>
 	  <section class="jumbotron">
@@ -194,7 +193,7 @@
   </footer>
     <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
     <?php
-      echo libreriesGet();
+      include("assets/src/libreries.php") ;
     ?>
 </body>
 </html>

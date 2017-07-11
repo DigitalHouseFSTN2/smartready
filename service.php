@@ -1,7 +1,5 @@
 <?php
-  require_once "./assets/src/nav.php";
-  require_once "./assets/src/Libreries.php";
-  
+
   session_start();
 ?>
 <!DOCTYPE html>
@@ -61,7 +59,7 @@
 	  </header>
 	  <nav class="navbar navbar-inverse">
 		  <?php
-        echo navGet('OUT');
+        include("assets/src/nav.php");
       ?>
 		</nav>
 	  <section class="jumbotron">
@@ -183,7 +181,7 @@
   </footer>
     <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
     <?php
-      echo libreriesGet();
+      include("assets/src/libreries.php") ;
     ?>
 </body>
 </html>

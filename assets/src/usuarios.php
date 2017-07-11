@@ -51,7 +51,7 @@ function usuarioFindMail($mail){
         // echo 'Usuario ok <br>';
       }
       if (!feof($filecuentas)) {
-        $errores['email'] = 'error inseerado';
+        $errores['email'] = 'error inesperado';
         return 0;
         // echo "Error: fallo inesperado de fgets()\n";
       }

@@ -1,6 +1,4 @@
 <?php
-  require_once "./assets/src/nav.php";
-  require_once "./assets/src/Libreries.php";
   require_once "./assets/src/usuarios.php";
 
   session_start();
@@ -82,7 +80,7 @@
 	  </header>
 	  <nav class="navbar navbar-inverse">
       <?php
-		    echo navGet("OUT");
+        include("assets/src/nav.php");
       ?>
 		</nav>
     <section class="login">
@@ -91,7 +89,7 @@
             <div class="panel panel-info" >
               <div class="panel-heading">
                 <div class="panel-title">Registrarse</div>
-                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Olvidó su clave?</a></div>
+                <div class="panel-title" style="float:right; font-size: 80%; position: relative; top:-10px"><a href="olvido.php">Olvidó su clave?</a></div>
               </div>
               <div style="padding-top:30px" class="panel-body" >
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
@@ -201,7 +199,7 @@
   </footer>
     <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
     <?php
-      echo libreriesGet();
+      include("assets/src/libreries.php") ;
     ?>
 </body>
 </html>
