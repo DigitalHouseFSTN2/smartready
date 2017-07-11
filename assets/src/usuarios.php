@@ -2,8 +2,7 @@
 
 require_once "validaciones.php";
 
-function usuarioSet($nombre, $apellido, $email, $password, $valPassword)
-{
+function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
     // Validar!
     $errores = usuarioVal($nombre, $apellido, $email, $password, $valPassword);
 
@@ -89,6 +88,7 @@ function usuarioAccess($mail,$password)  {
           {
 
             $password = sha1($password);
+            
             if ($regUsuario['password'] == $password){
 
             $_SESSION["name"] = $regUsuario["name"];
@@ -118,8 +118,7 @@ function usuarioAccess($mail,$password)  {
       return 0; // "Debe informar usuario y clave";
   }
 }
-function usuarioVal($nombre, $apellido, $email, $password, $valPassword)
-{
+function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
     if ( $password <> $valPassword){
       $errores['password'] = 'La clave no coincide con la validación';

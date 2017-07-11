@@ -1,6 +1,9 @@
 <?php
   require_once "./assets/src/nav.php";
   require_once "./assets/src/Libreries.php";
+
+  session_start();
+
 ?>
 <!DOCTYPE html>
 <html>

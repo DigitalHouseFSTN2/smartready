@@ -2,11 +2,13 @@
   require_once "./assets/src/nav.php";
   require_once "./assets/src/Libreries.php";
   require_once "./assets/src/usuarios.php";
+  
+  session_start();
 
   $fueCompletado = isset($_REQUEST['submitted']);
   if($fueCompletado){
     $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'] );
-    var_dump($resultado); 
+    var_dump($resultado);
     if( is_array($resultado) && !empty($resultado)){
       // Hubo errores
     } else {

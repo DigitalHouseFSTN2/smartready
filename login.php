@@ -4,6 +4,8 @@
   require_once "./assets/src/validaciones.php";
   require_once "./assets/src/usuarios.php";
 
+  session_start();
+  
   // var_dump($_REQUEST);
   $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
   if ($fueCompletado){
