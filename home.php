@@ -1,18 +1,15 @@
 <?php
   require_once "./assets/src/nav.php";
   require_once "./assets/src/Libreries.php";
-echo "Ver datos de session <br>";
 
   session_start();
-  
+
   if(isset($_SESSION['email'])){
-    echo "hay datos de session";
+    //echo "hay datos de session";
   } else {
-    echo "no había datos de sessión";
-    session_start();
     $_SESSION['email']='';
   }
-  var_dump($_SESSION);
+  
 ?>
 
 <!DOCTYPE html>

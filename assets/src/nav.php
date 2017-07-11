@@ -24,7 +24,7 @@ function navGet()
     $navHtml = $navHtml . '           <ul class="dropdown-menu">';
     $navHtml = $navHtml . '             <li><a href="home.php">Acercad de</a></li>';
     if(empty($_SESSION['email'])){
-      
+
       $navHtml = $navHtml . '         <li role="separator" class="divider"></li>';
       $navHtml = $navHtml . '         <li><a href="login.php">Ingreso</a></li>';
       $navHtml = $navHtml . '         <li><a href="register.php">Registracion</a></li>';
@@ -37,11 +37,18 @@ function navGet()
     $navHtml = $navHtml . '     </li>';
     $navHtml = $navHtml . '     <li>';
     $navHtml = $navHtml . '           <a href="service.php">Servicios</a>';
-    $navHtml = $navHtml . '         </li>';
-    $navHtml = $navHtml . '         <li>';
+    $navHtml = $navHtml . '     </li>';
+    $navHtml = $navHtml . '     <li>';
     $navHtml = $navHtml . '           <a href="plans.php">Planes</a>';
-    $navHtml = $navHtml . '         </li>';
-    $navHtml = $navHtml . '       </ul>';
+    $navHtml = $navHtml . '     </li>';
+    if(!empty($_SESSION['email'])){
+      $navHtml = $navHtml . '     <li>';
+      $navHtml = $navHtml . '           <a href="salir.php">Salir</a>';
+      $navHtml = $navHtml . '     </li>';
+    }
+    $navHtml = $navHtml . '     </ul>';
+
+
     $navHtml = $navHtml . '           <ul class="nav navbar-nav navbar-right">';
     $navHtml = $navHtml . '         <li><a href="#"><i class="fa fa-twitter"></i></a></li>';
     $navHtml = $navHtml . '         <li><a href="#"><i class="fa fa-facebook"></i></a></li>';

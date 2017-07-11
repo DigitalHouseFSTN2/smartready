@@ -5,27 +5,27 @@
   require_once "./assets/src/usuarios.php";
 
   session_start();
-  
+
   // var_dump($_REQUEST);
   $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
   if ($fueCompletado){
       $rslt = usuarioAccess($_REQUEST['email'], $_REQUEST['password']);
-      echo "<br> resultado usaurioAcces " . $rslt . "<br>";
+      // echo "<br> resultado usaurioAcces " . $rslt . "<br>";
       if ( $rslt )
       {
-        echo "<br> usuario válido <br>" ;
-
+        //echo "<br> usuario válido <br>" ;
+        echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
         // Guardar en session usuario y modo
       } else
       {
 
-          echo "<br> usuario inválido <br>";
+          // echo "<br> usuario inválido <br>";
       }
   } else {
 
     // Set session variables
 
-echo "Session variables are set.";
+
   }
   // Si fue completado.. validar y si es válido.. acceder modo 'IN' .. habría que incorporar el uso de websession.. formato json.
   // Si fue completado y hay errores, informar el error de logín.

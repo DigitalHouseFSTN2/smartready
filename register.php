@@ -2,13 +2,13 @@
   require_once "./assets/src/nav.php";
   require_once "./assets/src/Libreries.php";
   require_once "./assets/src/usuarios.php";
-  
+
   session_start();
 
   $fueCompletado = isset($_REQUEST['submitted']);
   if($fueCompletado){
     $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'] );
-    var_dump($resultado);
+    // var_dump($resultado);
     if( is_array($resultado) && !empty($resultado)){
       // Hubo errores
     } else {
@@ -111,11 +111,23 @@
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
-                        <input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">
+                        <?php
+                          if ( $fueCompletado && isset( $_REQUEST['lastname'])){
+                            echo '<input id="register-lastname" type="text" class="form-control" name="lastname" value="' . $_REQUEST['lastname'] .  '" placeholder="Cual es tu apellido?">';
+                          } else {
+                            echo '<input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">';
+                          }
+                        ?>
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                      <input id="register-email" type="text" class="form-control" name="email" placeholder="Ingresa tu e-mail">
+                      <?php
+                        if ( $fueCompletado && isset( $_REQUEST['email']) ){
+                          echo  '<input id="register-email" type="text" class="form-control" name="email" value="' . $_REQUEST['email']  . '" placeholder="Ingresa tu e-mail">';
+                        } else  {
+                          echo  '<input id="register-email" type="text" class="form-control" name="email" value="" placeholder="Ingresa tu e-mail">';
+                        }
+                        ?>
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>

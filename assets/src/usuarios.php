@@ -71,13 +71,13 @@ function usuarioAccess($mail,$password)  {
       // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("cuentasUsuarios.json", "r");
 
-      echo "Lectura archivo <br>";
+      // echo "Lectura archivo <br>";
       var_dump($filecuentas);
 
       if ($filecuentas) {
         while (($linea = fgets($filecuentas, 4096)) !== false) {
 
-          echo "Linea" . $linea . '<br>' ;
+          // echo "Linea" . $linea . '<br>' ;
           $regUsuario = json_decode($linea, true);
 
           /*echo "array usuario ";
@@ -88,13 +88,12 @@ function usuarioAccess($mail,$password)  {
           {
 
             $password = sha1($password);
-            
+
             if ($regUsuario['password'] == $password){
 
             $_SESSION["name"] = $regUsuario["name"];
             $_SESSION["lastName"] = $regUsuario["lastname"];
             $_SESSION["email"] = $regUsuario["email"];
-            $_SESSION["lastname"] = $regUsuario["lastname"];
             return 1;
           } else {
             return 0;
