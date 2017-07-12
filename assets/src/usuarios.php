@@ -9,6 +9,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
     if (empty($errores)) {
       // No hubo errores
       $errores = usuarioFindMail($email);
+
       if(empty($errores)){
         $password = sha1($password);
         // Transformarlo a json
@@ -26,7 +27,11 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
         $_SESSION["lastname"] = $apellido;
+
         return $resultado;
+
+        var_dump($resultado);
+
       } else {
       // Hubo errores
         return $errores;
@@ -46,23 +51,23 @@ function usuarioFindMail($mail){
         if (trim($regUsuario['email']) == trim($mail))
         {
           $errores['email'] = 'Ya existe una cuenta con este email';
-          return 0;
+          return $errores;
         }
         // echo 'Usuario ok <br>';
       }
       if (!feof($filecuentas)) {
         $errores['email'] = 'error inesperado';
-        return 0;
+        return $errores;
         // echo "Error: fallo inesperado de fgets()\n";
       }
       fclose($filecuentas);
-      return 1;  // Buscó y no econtró email
+      return $errores;  // Buscó y no econtró email
     } else {
         // echo "Ups!!! de file";
-        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
+        return $errores ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
     }
   } else {
-    return 0 ; // Debe informar el mail
+    return $errores ; // Debe informar el mail
   }
 }
 function usuarioAccess($mail,$password)  {
