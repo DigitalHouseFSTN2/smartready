@@ -46,4 +46,33 @@
   .panel-info {
     border-color: #d9230f;
   }
+
+  .messages {
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    height:40px;
+    width:100%;
+    position: fixed;
+  }
+
+  .messages .container .row .noerror {
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+  font-size: 25px;
+  background-color:#10b412;
+  }
+
+  .messages .container .row .error {
+  color:#ffffff ;
+  font-weight: bold;
+  text-align: center;
+  font-size: 25px;
+  background-color:#d9230f;
+  }
+
+
+
+
 </style>
