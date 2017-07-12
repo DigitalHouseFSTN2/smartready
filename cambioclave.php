@@ -1,6 +1,4 @@
 <?php
-  require_once "./assets/src/Libreries.php";
-
   session_start();
 
   if(isset($_SESSION['email'])){
@@ -18,55 +16,9 @@
 
     <title>SmartReady - IoT</title>
 
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/lib/css/style.css">
-    <link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.red.css">
-    <link rel="stylesheet" href="assets/lib/fonts/font-awesome.min.css">
-
-  	<style>
-  		.header {
-  			background-color: black;
-  		}
-  		.navbar {
-  			margin-bottom:8px;
-  		}
-  		.jumbotron {
-  			margin-bottom: 0px;
-  		}
-  		.section-color-3 {
-  			background-color: #a91b0c;;
-  		}
-  		.section__title {
-  			text-align: center;
-  		}
-  		.card--disabled:focus, .card--disabled:hover {
-  			cursor: default;
-  			background-color: #FFF;
-  		}
-  		.section__title {
-  			margin-top: 5px;
-  			margin-bottom: 46px;
-  		}
-  		.card__img--gray {
-  			-webkit-filter: grayscale(100%);
-  			-moz-filter: grayscale(100%);
-  			-ms-filter: grayscale(100%);
-  			-o-filter: grayscale(100%);
-  			filter: grayscale(100%);
-  			width: 140px;
-  		}
-      .panel-info {
-        border-color: #d9230f;
-      }
-      .panel-info>.panel-heading {
-        color: #ffffff;
-        background-color: #d9230f;
-        border-color: #d9230f;
-      }
-  		.card--default, .card--disabled {
-  			margin: 0px 30px 30px 0px;
-  		}
-  	</style>
+    <?php
+      include('./assets/src/style.php');
+    ?>
   </head>
   <body>
 	<div class="container">
@@ -77,7 +29,6 @@
 		  <?php
         include("assets/src/nav.php");
       ?>
-
 		</nav>
     <section class="login">
       <div class="container">
@@ -172,13 +123,13 @@
     <aside>
 		  <!-- aside content goes in here -->
 	  </aside>
-	</div> <!-- containder -->
-  <footer>
-    <!-- footer content goes in here -->
-  </footer>
-    <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
-    <?php
-      include("assets/src/libreries.php") ;  
-    ?>
-</body>
+    </div> <!-- containder -->
+    <footer>
+      <!-- footer content goes in here -->
+    </footer>
+      <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
+      <?php
+        include("assets/src/libreries.php") ;
+      ?>
+    </body>
 </html>
