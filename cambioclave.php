@@ -25,11 +25,9 @@
 	  <header>
 		  <!-- header content goes in here -->
 	  </header>
-	  <nav class="navbar navbar-inverse">
 		  <?php
         include("assets/src/nav.php");
       ?>
-		</nav>
     <section class="login">
       <div class="container">
         <div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
@@ -73,6 +71,11 @@
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Aquí debes repetir la calve nueva">
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                    <span></span>
+                    <input type="file" id="login-file" class="form-control input-file-novisible" name="file" aria-label="Amount (to the nearest dollar)">
                   </div>
                   <div class="input-group">
                     <div class="checkbox">
