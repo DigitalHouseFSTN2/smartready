@@ -1,6 +1,8 @@
 <?php
   require_once "./assets/src/validaciones.php";
   require_once "./assets/src/usuarios.php";
+  require_once "./assets/src/messages.php";
+
 
   session_start();
 
