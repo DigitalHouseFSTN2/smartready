@@ -102,6 +102,7 @@ function usuarioAccess($mail,$password)  {
             $_SESSION["name"] = $regUsuario["name"];
             $_SESSION["lastName"] = $regUsuario["lastname"];
             $_SESSION["email"] = $regUsuario["email"];
+            $_SESSION["password"] = $password; 
             return 1;
           } else {
             return 0;

@@ -1,8 +1,6 @@
 <?php
   require_once "./assets/src/validaciones.php";
   require_once "./assets/src/usuarios.php";
-  require_once "./assets/src/messages.php";
-
 
   session_start();
 
@@ -83,12 +81,6 @@
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                     <input id="login-password" type="password" class="form-control" name="password" placeholder="clave">
-                  </div>
-
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                    <span></span>
-                    <input type="file" id="login-file" class="form-control input-file-novisible" name="file" aria-label="Amount (to the nearest dollar)">
                   </div>
 
                   <div class="input-group">

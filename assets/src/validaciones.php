@@ -5,7 +5,7 @@ function validarNombreOApellido($nombreOApellido, $longitudMinima)
 
     $nombreOApellido = trim($nombreOApellido);
 
-    return ! empty($nombreOApellido) &&
+    return !empty($nombreOApellido) &&
         ctype_alpha($nombreOApellido) &&
         strlen($nombreOApellido) > $longitudMinima;
 }

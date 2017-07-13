@@ -73,11 +73,6 @@
                     <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Aquí debes repetir la calve nueva">
                   </div>
                   <div class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                    <span></span>
-                    <input type="file" id="login-file" class="form-control input-file-novisible" name="file" aria-label="Amount (to the nearest dollar)">
-                  </div>
-                  <div class="input-group">
                     <div class="checkbox">
                       <label>
                         <input id="login-remember" type="checkbox" name="remember" value="1"> Recuerdame por favor!!!
@@ -87,7 +82,7 @@
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <a id="btn-login" href="cambioclave.php" class="btn btn-success">Actualizar  </a>
+                        <a id="btn-login" href="cambioclave.php" class="btn btn-success">Modificar la clave  </a>
                       </div>
                   </div>
                 </form>
