@@ -1,6 +1,7 @@
 <?php
 
 require_once "validaciones.php";
+require_once "messages.php";
 
 function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
     // Validar!
@@ -44,6 +45,7 @@ function usuarioFindMail($mail){
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
+
     $filecuentas = @fopen("cuentasUsuarios.json", "r");
     if ($filecuentas) {
       while (($linea = fgets($filecuentas, 4096)) !== false) {
@@ -70,6 +72,7 @@ function usuarioFindMail($mail){
     return $errores ; // Debe informar el mail
   }
 }
+
 function usuarioAccess($mail,$password)  {
 
   if (!empty($mail) && !empty($password))  {
@@ -122,26 +125,42 @@ function usuarioAccess($mail,$password)  {
       return 0; // "Debe informar usuario y clave";
   }
 }
+
+
 function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
+    $mensajetipo = "";
+    $mensajetexto= "";
+
     if ( $password <> $valPassword){
-      $errores['password'] = 'La clave no coincide con la validación';
+        $errores['password'] = 'La clave no coincide con la validación';
     }
     if (! validarNombreOApellido($nombre, 1)) {
-        $errores['name'] = "El nombre es invalido";
+    //    $errores['name'] = "El nombre es invalido";
+        mensaje('incorrecto', 'El nombre es invalido');
+
     }
 
     if (! validarNombreOApellido($apellido, 2)) {
-        $errores['lastname'] = "El apellido no es valido";
+//        $errores['lastname'] = "El apellido no es valido";
+        mensaje('incorrecto', 'El apellido no es valido');
+
     }
 
     if (! validarEmail($email)) {
-        $errores['email'] = "El mail ingresado no es valido" ;
+//        $errores['email'] = "El mail ingresado no es valido" ;
+          mensaje('incorrecto', 'El mail ingresado no es valido');
+
     }
 
     if (! validarPassword($password)) {
-        $errores['password'] = "El password ingresado no es valido";
+    //    $errores['password'] = "El password ingresado no es valido";
+         mensaje('incorrecto', 'El password ingresado no es valido');
     }
 
+
+
     return $errores;
+
+
 }

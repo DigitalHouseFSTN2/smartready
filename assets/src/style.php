@@ -72,7 +72,9 @@
   background-color:#d9230f;
   }
 
-
-
+ .message {
+  margin-top:100px;
+  margin-left: 0px;
+  }
 
 </style>
