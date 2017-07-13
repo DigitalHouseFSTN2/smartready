@@ -20,13 +20,12 @@ function validarNombreDeUsuario($nombreDeUsuario)
     $nombreDeUsuario = trim($nombreDeUsuario);
 
     return !empty($nombreDeUsuario) &&
-        strlen($nombreDeUsuario) > 7;
+        strlen($nombreDeUsuario) > 4;
 }
 
 function validarPassword($password)
 {
     $password = trim($password);
-
     return !empty($password) &&
         strlen($password) > 4;
 }
