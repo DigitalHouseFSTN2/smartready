@@ -1,7 +1,13 @@
-<?php // START PHP
+<?php
+  session_start();
 
-  session_start(); ?>
+  if(isset($_SESSION['email'])){
+    //echo "hay datos de session";
+  } else {
+    echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
+  }
 
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,19 +16,20 @@
 
     <title>SmartReady - IoT</title>
 
-    <?php  // ESTILOS PERSONALIZADOS
-      include('./assets/src/style.php');     ?>
-
+    <?php
+      include('./assets/src/style.php');
+    ?>
   </head>
   <body>
 	<div class="container">
 	  <header>
 		  <!-- header content goes in here -->
 	  </header>
-
-	  <?php // BARRA DE NAVEGACIÓN
-      include("assets/src/nav.php");    ?>
-
+	  <nav class="navbar navbar-inverse">
+		  <?php
+        include("assets/src/nav.php");
+      ?>
+		</nav>
     <section class="login">
       <div class="container">
         <div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
@@ -54,14 +61,18 @@
                       }
                     ?>
                   </div>
-                  <!--
+
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-password" type="password" class="form-control" name="password" placeholder="Una clave que puedas repetir">
+                    <input id="register-lastpassword" type="password" class="form-control" name="lastpassword" placeholder="Ingrese su clave actual">
                   </div>
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Si.. aquí repites la calve (yo te avisé)">
+                    <input id="register-password" type="password" class="form-control" name="password" placeholder="Ingrese una nueva clave">
+                  </div>
+                  <div style="margin-bottom: 25px" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Aquí debes repetir la calve nueva">
                   </div>
                   <div class="input-group">
                     <div class="checkbox">
@@ -70,11 +81,10 @@
                       </label>
                     </div>
                   </div>
-                  -->
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <a id="btn-login" href="cambioclave.php" class="btn btn-success">Cambiar la clave  </a>
+                        <a id="btn-login" href="cambioclave.php" class="btn btn-success">Actualizar  </a>
                       </div>
                   </div>
                 </form>
@@ -84,19 +94,42 @@
 
       </div>
     </section>
-
-    <?php // INFORMACIÓNO DEL SERVICIO
-      include('./assets/src/presentacion.php');    ?>
-
+	  <section class="jumbotron">
+  		<div class="container">
+  		  <h1>Productos conectados en hogares inteligentes</h1>
+  		  <h2>No es solo una cuestión de tener dispositivos Smart, sino conectarlos...</h2>
+  	 	  <!-- <p class="text-muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p> -->
+  		  <!--
+    		<blockquote class="blockquote-reverse">
+    			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+    			<small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+    		</blockquote>
+    		-->
+  		  <p class="text-primary">No es solo una cuestión de tener dispositivos Smart, sino conectarlos...</p>
+  	  	<blockquote>
+  		  	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+  			  <small>Someone famous in <cite title="Source Title">Source Title</cite></small>
+  		  </blockquote>
+  		  <!--
+    			<p class="text-warning">Etiam porta sem malesuada magna mollis euismod.</p>
+    			<p class="text-danger">Donec ullamcorper nulla non metus auctor fringilla.</p>
+    			<p class="text-success">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+    			<p class="text-info">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+    		-->
+  		  <p><a class="btn btn-primary btn-lg">Leer mas</a></p>
+  		  <!-- sidebar content goes in here -->
+  		</div>
+  	</section>
     <aside>
 		  <!-- aside content goes in here -->
 	  </aside>
-	</div> <!-- containder -->
-  <footer>
-    <!-- footer content goes in here -->
-  </footer>
-    <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
-    <?php //  LIBRERIAS
-      include("assets/src/libreries.php") ;     ?>
-</body>
+    </div> <!-- containder -->
+    <footer>
+      <!-- footer content goes in here -->
+    </footer>
+      <!-- Bootstrap core JavaScript from LibreriesGet() ================================================== -->
+      <?php
+        include("assets/src/libreries.php") ;
+      ?>
+    </body>
 </html>

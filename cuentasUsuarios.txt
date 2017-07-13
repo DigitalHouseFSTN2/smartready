@@ -1,2 +1,0 @@
-{"mail":"asd","password":'1234'}';
-{"mail":"hdhdh","password":'asdk'}';

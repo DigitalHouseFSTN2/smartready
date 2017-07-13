@@ -4,7 +4,7 @@ function validarNombreOApellido($nombreOApellido, $longitudMinima)
 {
 
     $nombreOApellido = trim($nombreOApellido);
-    
+
     return ! empty($nombreOApellido) &&
         ctype_alpha($nombreOApellido) &&
         strlen($nombreOApellido) > $longitudMinima;
@@ -28,5 +28,5 @@ function validarPassword($password)
     $password = trim($password);
 
     return !empty($password) &&
-        strlen($password) > 7;
+        strlen($password) > 4;
 }
