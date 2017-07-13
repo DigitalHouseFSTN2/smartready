@@ -25,13 +25,14 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
         $resultado = fwrite($fp, $jsonUser . PHP_EOL);
         fclose($fp);
 
+        $mensajetexto = 'Registro agregado exitosamente !';// echo 'Usuario ok <br>';
+        mensaje('correcto', $mensajetexto);
+
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
         $_SESSION["lastname"] = $apellido;
 
         return $resultado;
-
-        var_dump($resultado);
 
       } else {
       // Hubo errores
@@ -74,13 +75,14 @@ function usuarioFindMail($mail){
 }
 
 function usuarioAccess($mail,$password)  {
+  $mensajetipo = "";
+  $mensajetexto= "";
 
   if (!empty($mail) && !empty($password))  {
       // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("cuentasUsuarios.json", "r");
 
       // echo "Lectura archivo <br>";
-      var_dump($filecuentas);
 
       if ($filecuentas) {
         while (($linea = fgets($filecuentas, 4096)) !== false) {
@@ -102,13 +104,24 @@ function usuarioAccess($mail,$password)  {
             $_SESSION["name"] = $regUsuario["name"];
             $_SESSION["lastName"] = $regUsuario["lastname"];
             $_SESSION["email"] = $regUsuario["email"];
-            $_SESSION["password"] = $password; 
+            $_SESSION["password"] = $password;
+<<<<<<< HEAD
+
+=======
+
+            $mensajetexto = 'Registro agregado exitosamente !';
+            mensaje('correcto', $mensajetexto);
+>>>>>>> 5329d60bde9014dd1ab86b8673b127980478cd52
+            $mensajetexto = 'Registro agregado exitosamente !';
+            mensaje('correcto', $mensajetexto);
             return 1;
+
           } else {
+            $mensajetexto = 'No pudo agregarse el registro !';
+            mensaje('incorrecto', $mensajetexto);
             return 0;
           }
-            // echo 'Usuario ok <br>';
-          }
+        }
           // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
           // luego comparar con la clave.
         }
@@ -134,34 +147,31 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $mensajetexto= "";
 
     if ( $password <> $valPassword){
-        $errores['password'] = 'La clave no coincide con la validación';
+        $mensajetexto = 'La clave no coincide con la validación';
     }
     if (! validarNombreOApellido($nombre, 1)) {
     //    $errores['name'] = "El nombre es invalido";
-        mensaje('incorrecto', 'El nombre es invalido');
-
+        $mensajetexto = 'El nombre es inválido';
     }
 
     if (! validarNombreOApellido($apellido, 2)) {
 //        $errores['lastname'] = "El apellido no es valido";
-        mensaje('incorrecto', 'El apellido no es valido');
-
+        $mensajetexto ='El apellido no es válido';
     }
 
     if (! validarEmail($email)) {
 //        $errores['email'] = "El mail ingresado no es valido" ;
-          mensaje('incorrecto', 'El mail ingresado no es valido');
-
+       $mensajetexto ='El mail ingresado no es válido';
     }
 
     if (! validarPassword($password)) {
     //    $errores['password'] = "El password ingresado no es valido";
-         mensaje('incorrecto', 'El password ingresado no es valido');
-    }
+        $mensajetexto = 'El password ingresado no es válido';
+      }
 
-
-
+    if ($mensajetexto !== "") {
+      mensaje('incorrecto', $mensajetexto);
+      $errores = "Error!";
+  }
     return $errores;
-
-
-}
+ }
