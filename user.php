@@ -85,7 +85,7 @@
                             ?>
                           </div>
                           <div class="card-block">
-                            <h4 class="card-title">Imagen</h4>
+                            <h4 class="card-title">Avatar del Perfil</h4>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
                             <span></span>
                             <input type="file" id="login-file" class="form-control input-file-novisible" name="user-file" aria-label="Amount (to the nearest dollar)">
