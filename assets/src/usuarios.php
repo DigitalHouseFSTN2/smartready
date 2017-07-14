@@ -172,7 +172,7 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
 function usuarioSetFile(){
   if (!empty($_FILES["user-file"])){
     if($_FILES["user-file"]["error"] == UPLOAD_ERR_OK){     // NO HAY ERRORES
-      var_dump($_FILES);
+      
       $file_name  = $_FILES["user-file"]["name"];           // "IMG_20170625_164044.jpg"
       $file_type  = $_FILES["user-file"]["type"];           // "image/jpeg"
       $file       = $_FILES["user-file"]["tmp_name"];       // "C:\xampp\tmp\phpFBF0.tmp"
@@ -201,7 +201,7 @@ function usuarioGetfile(){
     if(file_exists( $miArchivo )){
       return '.' . '\\' . 'assets' . '\\' . 'img' . '\\' . $_SESSION["password"] . ".jpg";
     } else {
-      return ""; 
+      return "";
     }
 
 }

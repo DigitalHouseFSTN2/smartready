@@ -2,9 +2,8 @@
 
   session_start();
 
-  var_dump($_REQUEST);
+
   require_once "./assets/src/usuarios.php";
-  var_dump($_FILES); 
   if (!empty($_FILES["user-file"])){
     usuarioSetFile();
   }
