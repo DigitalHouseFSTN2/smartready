@@ -105,13 +105,7 @@ function usuarioAccess($mail,$password)  {
             $_SESSION["lastName"] = $regUsuario["lastname"];
             $_SESSION["email"] = $regUsuario["email"];
             $_SESSION["password"] = $password;
-<<<<<<< HEAD
 
-=======
-
-            $mensajetexto = 'Registro agregado exitosamente !';
-            mensaje('correcto', $mensajetexto);
->>>>>>> 5329d60bde9014dd1ab86b8673b127980478cd52
             $mensajetexto = 'Registro agregado exitosamente !';
             mensaje('correcto', $mensajetexto);
             return 1;
@@ -175,3 +169,39 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
   }
     return $errores;
  }
+function usuarioSetFile(){
+  if (!empty($_FILES["user-file"])){
+    if($_FILES["user-file"]["error"] == UPLOAD_ERR_OK){     // NO HAY ERRORES
+      var_dump($_FILES);
+      $file_name  = $_FILES["user-file"]["name"];           // "IMG_20170625_164044.jpg"
+      $file_type  = $_FILES["user-file"]["type"];           // "image/jpeg"
+      $file       = $_FILES["user-file"]["tmp_name"];       // "C:\xampp\tmp\phpFBF0.tmp"
+      $file_error = $_FILES["user-file"]["error"];          //
+      $file_size  = $_FILES["user-file"]["size"];           // int(752014)
+      $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+      if(  ($file_size / 1024) < 1024 ){
+        $miArchivo =  dirname( __DIR__ . '../');
+        //$miArchivo = 'sdfsdf/sr'
+        $miArchivo .=  "\\" ."img". "\\";
+        $miArchivo .= $_SESSION["password"] . "." . $file_extension;
+        move_uploaded_file( $file, $miArchivo);
+      } else {  // imagen de tamaño mayor a 1M.
+        mensaje("incorrecto","El archivo supera 1M de tamaño");
+      }
+    } else {
+      mensaje("incorrecto", "Error al subir el archivo, intenteló nuevamente");
+    }
+  }
+}
+function usuarioGetfile(){
+    $miArchivo =  dirname( __DIR__ . '../');
+    //$miArchivo = 'sdfsdf/sr'
+    $miArchivo .=  "\\" ."img". "\\";
+    $miArchivo .= $_SESSION["password"] . ".jpg";  //  . $file_extension;
+    if(file_exists( $miArchivo )){
+      return '.' . '\\' . 'assets' . '\\' . 'img' . '\\' . $_SESSION["password"] . ".jpg";
+    } else {
+      return ""; 
+    }
+
+}

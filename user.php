@@ -4,29 +4,10 @@
 
   var_dump($_REQUEST);
   require_once "./assets/src/usuarios.php";
-
+  var_dump($_FILES); 
   if (!empty($_FILES["user-file"])){
-    if($_FILES["user-file"]["error"] == UPLOAD_ERR_OK){     // NO HAY ERRORES
-      var_dump($_FILES);
-      $file_name  = $_FILES["user-file"]["name"];           // "IMG_20170625_164044.jpg"
-      $file_type  = $_FILES["user-file"]["type"];           // "image/jpeg"
-      $file       = $_FILES["user-file"]["tmp_name"];       // "C:\xampp\tmp\phpFBF0.tmp"
-      $file_error = $_FILES["user-file"]["error"];          //
-      $file_size  = $_FILES["user-file"]["size"];           // int(752014)
-      $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
-      if(  ($file_size / 1024) < 1024 ){
-        $miArchivo = dirname(__FILE__);
-        $miArchivo .= "/img/";
-        $miArchivo .= $_SESSION["password"] . "." . $file_extension;
-        move_uploaded_file( $file, $miArchivo);
-      } else {  // imagen de tamaño mayor a 1M.
-        mensaje("incorrecto","El archivo supera 1M de tamaño");
-      }
-    } else {
-      mensaje("incorrecto", "Error al subir el archivo, intenteló nuevamente");
-    }
+    usuarioSetFile();
   }
-
 
     $fueCompletado = isset($_REQUEST['submitted']);
     // VALIDAR EXISTENCIA DE IMAGEN Y ACTUALIZAR IMAGEN
@@ -95,7 +76,14 @@
                       <div class="col-md-8">
                         <div class="card col-md-12" >
                           <div class="centered">
-                            <img class="card-img-top" src="..." alt="Card image cap">
+                            <?php
+                              $fileUserView = usuarioGetfile();
+                              if( strlen($fileUserView) ){
+                                echo '<img class="card-img-top" src="' . $fileUserView . '" alt="Card image cap">';
+                              } else {
+                                echo  '<img class="card-img-top" src="..." alt="Card image cap">';
+                              }
+                            ?>
                           </div>
                           <div class="card-block">
                             <h4 class="card-title">Imagen</h4>
