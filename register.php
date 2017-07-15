@@ -19,7 +19,6 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SmartReady - IoT</title>
 
     <?php
@@ -47,7 +46,7 @@
               </div>
               <div style="padding-top:30px" class="panel-body" >
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-                <form id="loginform" action='register.php' method='post' class="form-horizontal" role="form">
+                <form id="loginform" action='register.php' method='post' enctype="multipart/form-data" class="form-horizontal" role="form">
 
                     <input type='hidden' name='submitted' id='submitted' value='1'/>
 
@@ -87,7 +86,7 @@
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                       <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                      <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Si.. aquí repites la calve (yo te avisé)">
+                      <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Si.. aquí repites la clave (yo te avisé)">
                     </div>
                     <div class="input-group">
                       <div class="checkbox">

@@ -1,12 +1,26 @@
 <?php // START PHP
 
-  session_start(); ?>
+  session_start();
 
+
+  require_once "./assets/src/usuarios.php";
+  if (!empty($_FILES["user-file"])){
+    usuarioSetFile();
+  }
+
+    $fueCompletado = isset($_REQUEST['submitted']);
+    // VALIDAR EXISTENCIA DE IMAGEN Y ACTUALIZAR IMAGEN
+    if($fueCompletado ){
+      //$resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'] );
+    }
+  ?>
 <!DOCTYPE html>
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     <title>SmartReady - IoT</title>
 
@@ -33,12 +47,13 @@
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-              <form id="loginform" class="form-horizontal" role="form">
+              <form id="loginform" action='user.php' method='post' enctype="multipart/form-data" class="form-horizontal" role="form">
+                  <input type='hidden' name='submitted' id='submitted' value='1'/>
                   <div style="margin-bottom: 25px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                       <?php
                         if( empty($_SESSION["name"]) ){
-                            echo '<input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">';
+                          echo '<input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">';
                         } else {
                           echo '<input id="register-username" type="text" class="form-control" name="username" value="' . $_SESSION["name"] . '" placeholder="Cual es tu nombre?" disabled>';
                         }
@@ -54,29 +69,39 @@
                       }
                     ?>
                   </div>
-                  <!--
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-password" type="password" class="form-control" name="password" placeholder="Una clave que puedas repetir">
-                  </div>
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Si.. aquí repites la calve (yo te avisé)">
-                  </div>
                   <div class="input-group">
-                    <div class="checkbox">
-                      <label>
-                        <input id="login-remember" type="checkbox" name="remember" value="1"> Recuerdame por favor!!!
-                      </label>
+                    <div class="row">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-8">
+                        <div class="card col-md-12" >
+                          <div class="centered">
+                            <?php
+                              $fileUserView = usuarioGetfile();
+                              if( strlen($fileUserView) ){
+                                echo '<img class="card-img-top" src="' . $fileUserView . '" alt="Card image cap">';
+                              } else {
+                                echo  '<img class="card-img-top" src="..." alt="Card image cap">';
+                              }
+                            ?>
+                          </div>
+                          <div class="card-block">
+                            <h4 class="card-title">Avatar del Perfil</h4>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                            <span></span>
+                            <input type="file" id="login-file" class="form-control input-file-novisible" name="user-file" aria-label="Amount (to the nearest dollar)">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-2"></div>
                     </div>
                   </div>
-                  -->
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <a id="btn-login" href="cambioclave.php" class="btn btn-success">Cambiar la clave  </a>
+                        <input id="btn-login" class="btn btn-success" type='submit' value='Actualizar imagen' />
                       </div>
                   </div>
+
                 </form>
             </div>
           </div>

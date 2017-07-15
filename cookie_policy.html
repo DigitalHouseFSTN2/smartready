@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+<!-- Politica de usar cookies y avisar al Usuario -->
+
+<!--Inicio script ley de cookies-->
+<div id="barracookies" style="display:none;position:fixed;left:0px;right:0px;bottom:0px;width:100%;min-height:40px;background: #333333;color:#d7c712;z-index: 99999;">
+ <div style="width:100%;position:absolute;padding-left:5px;font-family:verdana;font-size:12px;top:30%;text-align:center;">
+  <span>Usamos cookies propias y de terceros para ayudarte en tu navegación. Si continuas navegando consideramos que aceptas el uso de cookies.</span>
+  <a href="javascript:void(0);" style="padding:6px;background:#4682B4;text-decoration:none;color:#fff;border-radius:5px;" onclick="PonerCookie();"><b>OK</b></a>
+  <a rel="nofollow" href="http://www.google.com.ar/intl/es-419/policies/technologies/types/" target="_blank" style="padding-left:5px;text-decoration:none;color:#ffffff;">Más información</a>
+ </div>
+ </div>
+ <script>
+
+ function getCookie(c_name){
+  var c_value = document.cookie;
+  var c_start = c_value.indexOf(" " + c_name + "=");
+  if (c_start == -1){
+  c_start = c_value.indexOf(c_name + "=");
+  }
+  if (c_start == -1){
+  c_value = null;
+  }else{
+  c_start = c_value.indexOf("=", c_start) + 1;
+  var c_end = c_value.indexOf(";", c_start);
+  if (c_end == -1){
+   c_end = c_value.length;
+  }
+
+   c_value = unescape(c_value.substring(c_start,c_end));
+  }
+  return c_value;
+ }
+ function setCookie(c_name,value,exdays){
+  var exdate=new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+  document.cookie=c_name + "=" + c_value;
+ }
+ if(getCookie('aviso')!="1"){
+  document.getElementById("barracookies").style.display="block";
+ }
+ function PonerCookie(){
+  setCookie('aviso','1',365);
+  document.getElementById("barracookies").style.display="none";
+ }
+ </script>
+
+</body>
+</html>
+
+ <!--Fin script ley de cookies-->

@@ -19,6 +19,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
     <title>SmartReady - IoT</title>
 
     <?php
@@ -40,7 +42,6 @@
     <?php // PRESENTACIÓN DEL SERVICIO
       include('./assets/src/presentacion.php');
     ?>
-
 
 	  <section id="carousel">
 		  <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -95,5 +96,7 @@
     <?php
       include("assets/src/libreries.php") ;
     ?>
+
+    src="./cookie_politica.php"
   </body>
 </html>
