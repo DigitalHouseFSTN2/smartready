@@ -4,10 +4,12 @@
   session_start();
 
   $fueCompletado = isset($_REQUEST['submitted']);
+
   if($fueCompletado){
-    $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'] );
-    // var_dump($resultado);
-    if( is_array($resultado) && !empty($resultado)){
+
+     $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'],$_REQUEST['remember'] );
+
+      if( is_array($resultado) && !empty($resultado)){
       // Hubo errores
     } else {
       // no hubo errores.
@@ -91,7 +93,8 @@
                     <div class="input-group">
                       <div class="checkbox">
                         <label>
-                          <input id="login-remember" type="checkbox" name="remember" value="1"> Recuerdame por favor!!!
+                          <input id="login-remember" type="hidden"   name="remember" value="0" />
+                          <input id="login-remember" type="checkbox" name="remember" value="1" /> Recuerdame por favor!!!
                         </label>
                       </div>
                     </div>

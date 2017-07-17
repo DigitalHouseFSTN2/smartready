@@ -26,6 +26,9 @@
     <?php
       // ESTILOS PERSONALIZADOS
       include('./assets/src/style.php');
+      require_once "./assets/src/messages.php";
+
+
     ?>
   </head>
 
@@ -97,6 +100,5 @@
       include("assets/src/libreries.php") ;
     ?>
 
-    src="./cookie_politica.php"
   </body>
 </html>

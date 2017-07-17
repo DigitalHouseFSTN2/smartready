@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="assets/lib/css/style.css">
 <link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.red.css">
 <link rel="stylesheet" href="assets/lib/fonts/font-awesome.min.css">
