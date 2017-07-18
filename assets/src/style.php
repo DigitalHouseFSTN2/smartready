@@ -77,4 +77,10 @@
   margin-left: 0px;
   }
 
+  #img-perfil{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+  }
+
 </style>
