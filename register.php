@@ -9,10 +9,12 @@
 
      $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'],$_REQUEST['remember'] );
 
-      if( is_array($resultado) && !empty($resultado)){
-      // Hubo errores
+     if( $resultado) {
+      // no Hubo errores
+      header("Location:home.php");
     } else {
-      // no hubo errores.
+      // hubo errores.
+
     }
   }
 ?>

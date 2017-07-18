@@ -5,7 +5,7 @@
 
 <style>
   .header {
-    background-color: black;
+    background-color: black !important;
   }
   .navbar {
     margin-bottom:8px;

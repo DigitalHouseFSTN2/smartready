@@ -12,7 +12,7 @@
       if ( $rslt )
       {
         //echo "<br> usuario válido <br>" ;
-        echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
+        header("Location:home.php");
         // Guardar en session usuario y modo
       } else
       {
@@ -79,7 +79,7 @@
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
                       <div class="col-sm-12 controls">
-                        <input id="btn-login" class="btn btn-success" type='submit' value='Solitar cambio de clave' />
+                        <input id="btn-login" class="btn btn-success" type='submit' value='Solicitar cambio de clave' />
                       </div>
                   </div>
 
@@ -91,73 +91,6 @@
                       </div>
                   </div>
 
-                </form>
-            </div>
-          </div>
-        </div>
-        <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-          <div class="panel panel-info" >
-            <div class="panel-heading">
-              <div class="panel-title">Registrarse</div>
-              <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Olvidó su clave?</a></div>
-            </div>
-            <div style="padding-top:30px" class="panel-body" >
-              <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-              <form id="loginform"  action='login.php' method='post' class="form-horizontal" role="form">
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                      <?php
-                        if($fueCompletado && isset($_REQUEST['username'])){
-                          echo '<input id="register-username" type="text" class="form-control" name="username" value="' . $_REQUEST['username'] . '" placeholder="Cual es tu nombre?">';
-                        } else {
-                          echo '<input id="register-username" type="text" class="form-control" name="username" value="" placeholder="Cual es tu nombre?">';
-                        }
-                      ?>
-                  </div>
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                    <?php
-                      if($fueCompletado && isset($_REQUEST['email'])){
-                        echo '<input id="register-email" type="text" class="form-control" name="email" value="' . $_REQUEST['email'] .  '" placeholder="Ingresa tu e-mail">';
-                      } else {
-                        echo  '<input id="register-email" type="text" class="form-control" name="email" placeholder="Ingresa tu e-mail">';
-                      }
-                    ?>
-                  </div>
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-plus"></i></span>
-                      <input id="register-lastname" type="text" class="form-control" name="lastname" value="" placeholder="Cual es tu apellido?">
-                  </div>
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-password" type="password" class="form-control" name="password" placeholder="Una clave que puedas repetir">
-                  </div>
-                  <div style="margin-bottom: 25px" class="input-group">
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    <input id="register-repassword" type="password" class="form-control" name="repassword" placeholder="Si.. aquí repites la calve (yo te avisé)">
-                  </div>
-                  <div class="input-group">
-                    <div class="checkbox">
-                      <label>
-                        <input id="login-remember" type="checkbox" name="remember" value="1"> Recuerdame por favor!!!
-                      </label>
-                    </div>
-                  </div>
-                  <div style="margin-top:10px" class="form-group">
-                      <!-- Button -->
-                      <div class="col-sm-12 controls">
-                        <input id="btn-login" class="btn btn-success" type='submit' value='Registrarse' />
-                      </div>
-
-                  </div>
-                  <div class="form-group">
-                      <div class="col-md-12 control">
-                        <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-                          Tienes una cuenta y llegaste hasta aquí por curioso!
-                          <a href="#" onClick="$('#loginbox').show(); $('#signupbox').hide()"><strong>Vuelve desde aquí</strong></a>
-                        </div>
-                      </div>
-                  </div>
                 </form>
             </div>
           </div>

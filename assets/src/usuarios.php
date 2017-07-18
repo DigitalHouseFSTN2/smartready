@@ -56,18 +56,18 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
       }
 
-        $mensajetexto = 'Registro agregado exitosamente !';
-        mensaje('correcto', $mensajetexto);
+        //$mensajetexto = 'Registro agregado exitosamente !';
+        //mensaje('correcto', $mensajetexto);
 
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
-        $_SESSION["lastname"] = $apellido;
+        $_SESSION["lastName"] = $apellido;
 
-        return $resultado;
+        return 1;
 
       } else {
       // Hubo errores
-        return $errores;
+        return 0;
       }
     }
 }

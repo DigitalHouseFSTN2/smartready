@@ -16,10 +16,10 @@
       if ( $rslt )
         {
 
-              //header ("Location: cookie_policy.html");
+              header ("Location:home.php");
 
-              $mensajetexto = 'Autenticado correctamente !';
-              mensaje('correcto', $mensajetexto);
+              //$mensajetexto = 'Autenticado correctamente !';
+              //mensaje('correcto', $mensajetexto);
 
               // echo "Autenticado correctamente";
               //header ("Location: contenidos_protegidos_cookie.php");

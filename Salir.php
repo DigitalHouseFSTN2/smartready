@@ -1,9 +1,10 @@
 <?php
   session_start();
   session_unset();
-  $_SESSION = array();
+//  $_SESSION = array();
 
   session_destroy();
 
-  echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
+  header("Location:home.php");
+  //echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
 ?>

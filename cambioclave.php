@@ -16,7 +16,7 @@
       }
     //echo "hay datos de session";
   } else {
-    echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
+    header("Location:home.php");
   }
 
 ?>
