@@ -1,12 +1,17 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <!--<link rel="stylesheet" href="assets/lib/css/style.css">-->
 <!--<link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.red.css">-->
-<!--<link rel="stylesheet" href="assets/lib/bootstrap/v4/css/bootstrap.css">--> 
+<!--<link rel="stylesheet" href="assets/lib/bootstrap/v4/css/bootstrap.css">-->
 <link rel="stylesheet" href="assets/lib/fonts/font-awesome.min.css">
 
 <style>
   .header {
     background-color: black !important;
+  }
+  .row{
+    margin-right: 15px;
+    margin-left: 0px;
+}
   }
   .navbar {
     margin-bottom:8px;
