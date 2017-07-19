@@ -5,29 +5,39 @@
   session_start();
 
   // var_dump($_REQUEST);
+
   $fueCompletado = isset($_REQUEST['submitted']); // campo input no visible
+
   if ($fueCompletado){
+
       $rslt = usuarioAccess($_REQUEST['email'], $_REQUEST['password']);
       // echo "<br> resultado usaurioAcces " . $rslt . "<br>";
+
       if ( $rslt )
-      {
-        //echo "<br> usuario válido <br>" ;
-        echo ("<SCRIPT LANGUAJE='JavaScript')>window.location.href='home.php'; </SCRIPT>");
-        // Guardar en session usuario y modo
-      } else
-      {
+        {
 
-          // echo "<br> usuario inválido <br>";
-      }
-  } else {
+              header ("Location:home.php");
 
-    // Set session variables
+              //$mensajetexto = 'Autenticado correctamente !';
+              //mensaje('correcto', $mensajetexto);
+
+              // echo "Autenticado correctamente";
+              //header ("Location: contenidos_protegidos_cookie.php");
+              }
+
+       else {
+
+         $mensajetexto = 'Fallo de autenticación! !';
+         mensaje('incorrecto', $mensajetexto);
+         //echo "<p><a href='prueba-cookies.php'>Volver</a>";
+     }
+   }
 
 
-  }
-  // Si fue completado.. validar y si es válido.. acceder modo 'IN' .. habría que incorporar el uso de websession.. formato json.
-  // Si fue completado y hay errores, informar el error de logín.
 ?>
+
+
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -40,6 +50,8 @@
       // ESTILOS PERSONALIZADOS
       include('./assets/src/style.php');
     ?>
+
+
 
   </head>
   <body>
@@ -73,6 +85,8 @@
                         if($fueCompletado){
                         echo '<input id="login-email" type="text" class="form-control" name="email" value="' . $_REQUEST["email"] . '" placeholder="email">';
                       } else {
+                        // buscar cookie .. si hay .. igual que lina anterior.. pero con email de cookie
+                        // si no hay cookie.. dejar linea que sigue.
                         echo '<input id="login-email" type="text" class="form-control" name="email" value="" placeholder="email">';
                       }
                       ?>
@@ -83,6 +97,7 @@
                     <input id="login-password" type="password" class="form-control" name="password" placeholder="clave">
                   </div>
 
+                <!--
                   <div class="input-group">
                     <div class="checkbox">
                       <label>
@@ -90,6 +105,7 @@
                       </label>
                     </div>
                   </div>
+                -->
 
                   <div style="margin-top:10px" class="form-group">
                       <!-- Button -->
@@ -184,7 +200,7 @@
 
 
     <?php // PRESESNTACIÓN DEL SERVICIO
-      include('./assets/src/presentacion.php');
+      include('./assets/src/inc_presentacion.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->

@@ -1,14 +1,38 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="assets/lib/css/style.css">
-<link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.red.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!--<link rel="stylesheet" href="assets/lib/css/style.css">-->
+<!--<link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.red.css">-->
+<!--<link rel="stylesheet" href="assets/lib/bootstrap/v4/css/bootstrap.css">-->
 <link rel="stylesheet" href="assets/lib/fonts/font-awesome.min.css">
 
 <style>
   .header {
-    background-color: black;
+    background-color: black !important;
+  }
+  .row{
+    margin-right: 15px;
+    margin-left: 0px;
+}
   }
   .navbar {
     margin-bottom:8px;
+  }
+  .navbar-inverse {
+    background-color: #d9230f;
+    border-color: #d9230f;
+  }
+  .navbar-inverse .navbar-brand {
+    color: white;
+    padding: 15px;
+  }
+  .navbar-inverse .navbar-nav>li>a {
+    color: white;
+  }
+  .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+    color: #fff;
+    background-color: #ea796d;
+  }
+  .text-primary {
+    color: #d9230f;
   }
   .jumbotron {
     margin-bottom: 0px;
@@ -77,4 +101,13 @@
   margin-left: 0px;
   }
 
+  #img-perfil{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+  }
+  .container-inf {
+    border-bottom: 1px solid #ff5821;
+    padding-top: 5px;
+  }
 </style>

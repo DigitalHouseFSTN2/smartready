@@ -26,6 +26,9 @@
     <?php
       // ESTILOS PERSONALIZADOS
       include('./assets/src/style.php');
+      require_once "./assets/src/messages.php";
+
+
     ?>
   </head>
 
@@ -40,7 +43,10 @@
     ?>
 
     <?php // PRESENTACIÓN DEL SERVICIO
-      include('./assets/src/presentacion.php');
+      include('./assets/src/inc_presentacion.php');
+      include('./assets/src/inc_servicios.php');
+      include('./assets/src/inc_planes.php');
+
     ?>
 
 	  <section id="carousel">
@@ -83,7 +89,7 @@
 
 
     <?php // NOSOTROS
-      include('./assets/src/nosotros.php');
+      //include('./assets/src/nosotros.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->
@@ -97,6 +103,5 @@
       include("assets/src/libreries.php") ;
     ?>
 
-    src="./cookie_politica.php"
   </body>
 </html>

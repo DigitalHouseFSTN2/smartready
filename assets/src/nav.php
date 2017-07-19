@@ -46,7 +46,11 @@
         ?>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><i class="fa fa-user"></i></a></li>
+        <?php
+          if(!empty($_SESSION['email'])){
+            echo '<li><a href="user.php">' . $_SESSION["name"] . '  ' . $_SESSION["lastName"] . '  '.  '<i class="fa fa-user"></i></a></li>';
+          }
+        ?>
         <li><a href="#"><i class="fa fa-twitter"></i></a></li>
         <li><a href="#"><i class="fa fa-facebook"></i></a></li>
         <li><a href="#"><i class="fa fa-linkedin"></i></a></li>

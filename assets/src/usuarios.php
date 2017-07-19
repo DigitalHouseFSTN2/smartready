@@ -3,9 +3,13 @@
 require_once "validaciones.php";
 require_once "messages.php";
 
-function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
+function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $remember){
+
+
     // Validar!
     $errores = usuarioVal($nombre, $apellido, $email, $password, $valPassword);
+    $numero_aleatorio = 0;
+
 
     if (empty($errores)) {
       // No hubo errores
@@ -14,32 +18,61 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword){
       if(empty($errores)){
         $password = sha1($password);
         // Transformarlo a json
+
+        // En base de datos
+        // $ssql = "update usuario set cookie='$numero_aleatorio' where id_usuario=" . $usuario_encontrado->id_usuario;
+        // mysql_query($ssql);
+
+         //3) ahora meto una cookie en el ordenador del usuario con el identificador del usuario y la cookie aleatoria
+
+       if ($remember == 1) {
+         //generamos un número aleatorio
+         mt_srand (time());
+         $numero_aleatorio = mt_rand(1000000,999999999);
+
+        }
+        else {
+          $numero_aleatorio = 0;
+          $remember         = 0;
+        }
+
         $jsonUser = json_encode([
             'name'      => $nombre,
-            'lastname'   => $apellido,
+            'lastname'  => $apellido,
             'email'     => $email,
-            'password'  => $password
+            'password'  => $password,
+            'remember'  => $remember,
+            'cookie_rnd'=> $numero_aleatorio
+
         ]);
 
         $fp = fopen("cuentasUsuarios.json", "a+");
+
         $resultado = fwrite($fp, $jsonUser . PHP_EOL);
         fclose($fp);
 
-        $mensajetexto = 'Registro agregado exitosamente !';// echo 'Usuario ok <br>';
-        mensaje('correcto', $mensajetexto);
+       if ($remember == 1) {
+        setcookie("id_usuario", $nombre.$apellido , time()+(60*60*24*365));
+        setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
+      }
+
+        //$mensajetexto = 'Registro agregado exitosamente !';
+        //mensaje('correcto', $mensajetexto);
 
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
-        $_SESSION["lastname"] = $apellido;
+        $_SESSION["lastName"] = $apellido;
 
-        return $resultado;
+        return 1;
 
       } else {
       // Hubo errores
-        return $errores;
+        return 0;
       }
     }
 }
+
+
 function usuarioFindMail($mail){
   $errores = [];
   if (!empty($mail) )  {
@@ -73,18 +106,23 @@ function usuarioFindMail($mail){
     return $errores ; // Debe informar el mail
   }
 }
+
+
 function usuarioAccess($mail,$password)  {
   $mensajetipo = "";
   $mensajetexto= "";
 
+
   if (!empty($mail) && !empty($password))  {
+
       // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("cuentasUsuarios.json", "r");
 
       // echo "Lectura archivo <br>";
 
       if ($filecuentas) {
-        while (($linea = fgets($filecuentas, 4096)) !== false) {
+
+         while (($linea = fgets($filecuentas, 4096)) !== false) {
 
           // echo "Linea" . $linea . '<br>' ;
           $regUsuario = json_decode($linea, true);
@@ -95,22 +133,58 @@ function usuarioAccess($mail,$password)  {
 
           if (trim($regUsuario['email']) == trim($mail))
           {
-
             $password = sha1($password);
 
             if ($regUsuario['password'] == $password){
 
-            $_SESSION["name"] = $regUsuario["name"];
-            $_SESSION["lastName"] = $regUsuario["lastname"];
-            $_SESSION["email"] = $regUsuario["email"];
-            $_SESSION["password"] = $password;
+            $_SESSION["name"]       = $regUsuario["name"];
+            $_SESSION["lastName"]   = $regUsuario["lastname"];
+            $_SESSION["email"]      = $regUsuario["email"];
+            $_SESSION["password"]   = $password;
+            $_SESSION["remember"]   = $regUsuario["remember"];
+            $_SESSION["cookie_rnd"] = $regUsuario["cookie_rnd"];
 
-            $mensajetexto = 'Registro agregado exitosamente !';
-            mensaje('correcto', $mensajetexto);
-            return 1;
+            // Una vez que tengo el usuario busco si tiene cookie
 
-          } else {
-            $mensajetexto = 'No pudo agregarse el registro !';
+
+            if ($_SESSION["remember"] == 1) {
+
+              //primero tengo que ver si el usuario está memorizado en una cookie
+              if (isset($_COOKIE["id_usuario"]) && isset($_COOKIE["marca_aleatoria_usuario"])){
+                //Tengo cookies memorizadas
+                //además voy a comprobar que esas variables no estén vacías
+
+                if ($_COOKIE["id_usuario"]!="" || $_COOKIE["marca_aleatoria_usuario"]!=""){
+                 //Voy a ver si corresponden con algún usuario
+
+                  if ($_COOKIE["id_usuario"] == $_SESSION["name"].$_SESSION["lastName"] && $_COOKIE["marca_aleatoria_usuario"] == $_SESSION["cookie_rnd"]) {
+
+                    $mensajetexto = 'El usuario tiene una cookie guardada....';
+                    mensaje('aviso', $mensajetexto);
+                    return 1;
+
+                  }
+
+                  else {
+
+                    $mensajetexto = 'Cookie guardada incorrectamente....';
+                    mensaje('alerta', $mensajetexto);
+                    return 0;
+                }
+              }
+            }
+
+
+           }
+           else {
+
+             $mensajetexto = 'El usuario NO tiene una cookie guardada....';
+             mensaje('alerta', $mensajetexto);
+             return 1;
+           }
+          }
+           else {
+            $mensajetexto = 'No pudo encontrarse el usuario, por favor reintente !';
             mensaje('incorrecto', $mensajetexto);
             return 0;
           }
@@ -118,12 +192,16 @@ function usuarioAccess($mail,$password)  {
           // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
           // luego comparar con la clave.
         }
+
         if (!feof($filecuentas)) {
+          $mensajetexto = 'No pudo accederse a la base de usuarios, por favor reintente !';
+          mensaje('incorrecto', $mensajetexto);
           return 0;
-          // echo "Error: fallo inesperado de fgets()\n";
         }
         fclose($filecuentas);
       } else {
+        $mensajetexto = 'No pudo accederse a la base de usuarios, por favor reintente !';
+        mensaje('incorrecto', $mensajetexto);
         // echo "Ups!!! de file";
         return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
       }
@@ -132,6 +210,9 @@ function usuarioAccess($mail,$password)  {
       return 0; // "Debe informar usuario y clave";
   }
 }
+
+
+
 function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
     $mensajetipo = "";
@@ -166,6 +247,8 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
   }
     return $errores;
  }
+
+
 function usuarioSetFile(){
   if (!empty($_FILES["user-file"])){
     if($_FILES["user-file"]["error"] == UPLOAD_ERR_OK){     // NO HAY ERRORES
@@ -190,6 +273,7 @@ function usuarioSetFile(){
     }
   }
 }
+
 function usuarioGetfile(){
     $miArchivo =  dirname( __DIR__ . '../');
     //$miArchivo = 'sdfsdf/sr'
@@ -202,6 +286,7 @@ function usuarioGetfile(){
     }
 
 }
+
 function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
   $errores = [];
   // VALIDAR SI NUEVA CLAVE Y VALIDACIÓN SON LO MISMO .. ANTES DE HACER OPERATORIA

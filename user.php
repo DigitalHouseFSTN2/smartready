@@ -69,36 +69,42 @@
                       }
                     ?>
                   </div>
-                  <div class="input-group">
+                  <div class="input-group col-md-12">
                     <div class="row">
                       <div class="col-md-2"></div>
-                      <div class="col-md-8">
+                      <div class="col-md-8 center-block">
                         <div class="card col-md-12" >
-                          <div class="centered">
+                          <div class="center-block">
                             <?php
                               $fileUserView = usuarioGetfile();
                               if( strlen($fileUserView) ){
-                                echo '<img class="card-img-top" src="' . $fileUserView . '" alt="Card image cap">';
+                                echo '<img id="img-perfil" class="card-img-top img-circle center-block" max-width="80px" max-height="80px"; ; src="' . $fileUserView . '" alt="Card image cap">';
                               } else {
                                 echo  '<img class="card-img-top" src="..." alt="Card image cap">';
                               }
                             ?>
                           </div>
-                          <div class="card-block">
-                            <h4 class="card-title">Avatar del Perfil</h4>
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
-                            <span></span>
-                            <input type="file" id="login-file" class="form-control input-file-novisible" name="user-file" aria-label="Amount (to the nearest dollar)">
-                          </div>
+
                         </div>
                       </div>
                       <div class="col-md-2"></div>
                     </div>
                   </div>
-                  <div style="margin-top:10px" class="form-group">
+                  <div class="input-group col-md-12">
+                    <div class="card-block">
+                      <h4 class="card-title text-center">Avatar del Perfil</h4>
+                      <div style="margin-bottom: 25px" class="input-group">
+
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+                        <span></span>
+                        <input type="file" id="login-file" class="form-control input-file-novisible" name="user-file" aria-label="Amount (to the nearest dollar)">
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top:10px" class="col-md-12">
                       <!-- Button -->
-                      <div class="col-sm-12 controls">
-                        <input id="btn-login" class="btn btn-success" type='submit' value='Actualizar imagen' />
+                      <div class="col-sm-12 controls center-block">
+                        <input id="btn-login" class="btn btn-success center-block" type='submit' value='Actualizar imagen' />
                       </div>
                   </div>
 
@@ -111,7 +117,7 @@
     </section>
 
     <?php // INFORMACIÓNO DEL SERVICIO
-      include('./assets/src/presentacion.php');    ?>
+      include('./assets/src/inc_presentacion.php');    ?>
 
     <aside>
 		  <!-- aside content goes in here -->
