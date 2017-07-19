@@ -43,7 +43,10 @@
     ?>
 
     <?php // PRESENTACIÓN DEL SERVICIO
-      include('./assets/src/presentacion.php');
+      include('./assets/src/inc_presentacion.php');
+      include('./assets/src/inc_servicios.php');
+      include('./assets/src/inc_planes.php');
+
     ?>
 
 	  <section id="carousel">
@@ -86,7 +89,7 @@
 
 
     <?php // NOSOTROS
-      include('./assets/src/nosotros.php');
+      //include('./assets/src/nosotros.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->

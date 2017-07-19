@@ -98,7 +98,7 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
                         <span></span>
                         <input type="file" id="login-file" class="form-control input-file-novisible" name="user-file" aria-label="Amount (to the nearest dollar)">
-                      </div> 
+                      </div>
                     </div>
                   </div>
                   <div style="margin-top:10px" class="col-md-12">
@@ -117,7 +117,7 @@
     </section>
 
     <?php // INFORMACIÓNO DEL SERVICIO
-      include('./assets/src/presentacion.php');    ?>
+      include('./assets/src/inc_presentacion.php');    ?>
 
     <aside>
 		  <!-- aside content goes in here -->

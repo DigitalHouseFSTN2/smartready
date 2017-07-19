@@ -86,7 +86,7 @@
                         echo '<input id="login-email" type="text" class="form-control" name="email" value="' . $_REQUEST["email"] . '" placeholder="email">';
                       } else {
                         // buscar cookie .. si hay .. igual que lina anterior.. pero con email de cookie
-                        // si no hay cookie.. dejar linea que sigue. 
+                        // si no hay cookie.. dejar linea que sigue.
                         echo '<input id="login-email" type="text" class="form-control" name="email" value="" placeholder="email">';
                       }
                       ?>
@@ -200,7 +200,7 @@
 
 
     <?php // PRESESNTACIÓN DEL SERVICIO
-      include('./assets/src/presentacion.php');
+      include('./assets/src/inc_presentacion.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->

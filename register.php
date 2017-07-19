@@ -123,7 +123,7 @@
     </section>
 
     <?php // PRESENTACIÓN DEL SERVICIO
-      include('./assets/src/presentacion.php');
+      include('./assets/src/inc_presentacion.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->
