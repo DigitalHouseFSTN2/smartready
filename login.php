@@ -1,5 +1,5 @@
 <?php
-  require_once "./assets/src/validaciones.php";
+  require_once "./assets/src/validate.php";
   require_once "./assets/src/usuarios.php";
 
   session_start();
@@ -70,7 +70,7 @@
           <div class="panel panel-info" >
             <div class="panel-heading">
               <div class="panel-title">Acceder</div>
-              <div class="panel-title" style="float:right; font-size: 80%; position: relative; top:-10px"><a href="olvido.php">Olvidó su clave?</a></div>
+              <div class="panel-title" style="float:right; font-size: 80%; position: relative; top:-10px"><a href="forget.php">Olvidó su clave?</a></div>
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>

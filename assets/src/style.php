@@ -67,6 +67,10 @@
     background-color: #d9230f;
     border-color: #d9230f;
   }
+  .panel-primary>.panel-heading {
+    color: #fff;
+    background-color: #d9230f;
+    border-color: #d9230f;
   .panel-info {
     border-color: #d9230f;
   }

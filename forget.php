@@ -1,5 +1,5 @@
 <?php
-  require_once "./assets/src/validaciones.php";
+  require_once "./assets/src/validate.php";
   require_once "./assets/src/usuarios.php";
 
   session_start();
