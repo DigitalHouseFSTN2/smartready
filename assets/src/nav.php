@@ -40,7 +40,7 @@
         <?php
           if(!empty($_SESSION['email'])){
             echo '<li>';
-            echo  '<a href="salir.php">Salir</a>';
+            echo  '<a href="exit.php">Salir</a>';
             echo  '</li>';
           }
         ?>

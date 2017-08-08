@@ -20,7 +20,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     <title>SmartReady - IoT</title>
 
@@ -43,7 +42,7 @@
           <div class="panel panel-info" >
             <div class="panel-heading">
               <div class="panel-title">Datos del usuario</div>
-              <div class="panel-title" style="float:right; font-size: 80%; position: relative; top:-10px"><a href="olvido.php">Olvidó su clave?</a></div>
+              <div class="panel-title" style="float:right; font-size: 80%; position: relative; top:-10px"><a href="forget.php">Olvidó su clave?</a></div>
             </div>
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
@@ -78,7 +77,7 @@
                             <?php
                               $fileUserView = usuarioGetfile();
                               if( strlen($fileUserView) ){
-                                echo '<img id="img-perfil" class="card-img-top img-circle center-block" max-width="80px" max-height="80px"; ; src="' . $fileUserView . '" alt="Card image cap">';
+                                echo '<img id="img-perfil" class="card-img-top img-circle center-block" src="' . $fileUserView . '" alt="Card image cap">';
                               } else {
                                 echo  '<img class="card-img-top" src="..." alt="Card image cap">';
                               }

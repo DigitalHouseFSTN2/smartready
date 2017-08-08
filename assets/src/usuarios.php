@@ -1,6 +1,6 @@
 <?php
 
-require_once "validaciones.php";
+require_once "validate.php";
 require_once "messages.php";
 
 function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $remember){
@@ -42,11 +42,12 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
             'email'     => $email,
             'password'  => $password,
             'remember'  => $remember,
-            'cookie_rnd'=> $numero_aleatorio
+            'cookie_rnd'=> $numero_aleatorio,
+            'extImagen'=>  ''
 
         ]);
 
-        $fp = fopen("cuentasUsuarios.json", "a+");
+        $fp = fopen("accountUser.json", "a+");
 
         $resultado = fwrite($fp, $jsonUser . PHP_EOL);
         fclose($fp);
@@ -62,6 +63,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
         $_SESSION["lastName"] = $apellido;
+        $_SESSION["extImagen"] = '';
 
         return 1;
 
@@ -72,7 +74,6 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
     }
 }
 
-
 function usuarioFindMail($mail){
   $errores = [];
   if (!empty($mail) )  {
@@ -80,7 +81,7 @@ function usuarioFindMail($mail){
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
 
-    $filecuentas = @fopen("cuentasUsuarios.json", "r");
+    $filecuentas = @fopen("accountUser.json", "r");
     if ($filecuentas) {
       while (($linea = fgets($filecuentas, 4096)) !== false) {
         $regUsuario = json_decode($linea, true);
@@ -107,16 +108,15 @@ function usuarioFindMail($mail){
   }
 }
 
-
 function usuarioAccess($mail,$password)  {
   $mensajetipo = "";
-  $mensajetexto= "";
+  $mensajetexto =  array();
 
 
   if (!empty($mail) && !empty($password))  {
 
       // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $filecuentas = @fopen("cuentasUsuarios.json", "r");
+      $filecuentas = @fopen("accountUser.json", "r");
 
       // echo "Lectura archivo <br>";
 
@@ -143,6 +143,7 @@ function usuarioAccess($mail,$password)  {
             $_SESSION["password"]   = $password;
             $_SESSION["remember"]   = $regUsuario["remember"];
             $_SESSION["cookie_rnd"] = $regUsuario["cookie_rnd"];
+            $_SESSION["extImagen"]  = $regUsuario["extImagen"];
 
             // Una vez que tengo el usuario busco si tiene cookie
 
@@ -159,7 +160,7 @@ function usuarioAccess($mail,$password)  {
 
                   if ($_COOKIE["id_usuario"] == $_SESSION["name"].$_SESSION["lastName"] && $_COOKIE["marca_aleatoria_usuario"] == $_SESSION["cookie_rnd"]) {
 
-                    $mensajetexto = 'El usuario tiene una cookie guardada....';
+                    $mensajetexto[] = 'El usuario tiene una cookie guardada....';
                     mensaje('aviso', $mensajetexto);
                     return 1;
 
@@ -167,7 +168,7 @@ function usuarioAccess($mail,$password)  {
 
                   else {
 
-                    $mensajetexto = 'Cookie guardada incorrectamente....';
+                    $mensajetexto[] = 'Cookie guardada incorrectamente....';
                     mensaje('alerta', $mensajetexto);
                     return 0;
                 }
@@ -178,13 +179,13 @@ function usuarioAccess($mail,$password)  {
            }
            else {
 
-             $mensajetexto = 'El usuario NO tiene una cookie guardada....';
+             $mensajetexto[] = 'El usuario NO tiene una cookie guardada....';
              mensaje('alerta', $mensajetexto);
              return 1;
            }
           }
            else {
-            $mensajetexto = 'No pudo encontrarse el usuario, por favor reintente !';
+            $mensajetexto[] = 'No pudo encontrarse el usuario, por favor reintente !';
             mensaje('incorrecto', $mensajetexto);
             return 0;
           }
@@ -194,13 +195,13 @@ function usuarioAccess($mail,$password)  {
         }
 
         if (!feof($filecuentas)) {
-          $mensajetexto = 'No pudo accederse a la base de usuarios, por favor reintente !';
+          $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
           mensaje('incorrecto', $mensajetexto);
           return 0;
         }
         fclose($filecuentas);
       } else {
-        $mensajetexto = 'No pudo accederse a la base de usuarios, por favor reintente !';
+        $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
         mensaje('incorrecto', $mensajetexto);
         // echo "Ups!!! de file";
         return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
@@ -211,43 +212,40 @@ function usuarioAccess($mail,$password)  {
   }
 }
 
-
-
 function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
     $mensajetipo = "";
     $mensajetexto= "";
 
     if ( $password <> $valPassword){
-        $mensajetexto = 'La clave no coincide con la validación';
+        $mensajetexto[] = 'La clave no coincide con la validación';
     }
     if (! validarNombreOApellido($nombre, 1)) {
     //    $errores['name'] = "El nombre es invalido";
-        $mensajetexto = 'El nombre es inválido';
+        $mensajetexto[] = 'El nombre es inválido';
     }
 
     if (! validarNombreOApellido($apellido, 2)) {
       //        $errores['lastname'] = "El apellido no es valido";
-        $mensajetexto ='El apellido no es válido';
+        $mensajetexto[] ='El apellido no es válido';
     }
 
     if (! validarEmail($email)) {
       //        $errores['email'] = "El mail ingresado no es valido" ;
-       $mensajetexto ='El mail ingresado no es válido';
+       $mensajetexto[] ='El mail ingresado no es válido';
     }
 
     if (! validarPassword($password)) {
     //    $errores['password'] = "El password ingresado no es valido";
-        $mensajetexto = 'El password ingresado no es válido';
+        $mensajetexto[] = 'El password ingresado no es válido';
       }
 
-    if ($mensajetexto !== "") {
+     if (count($mensajetexto) > 0 ) {
       mensaje('incorrecto', $mensajetexto);
       $errores = "Error!";
-  }
+    }
     return $errores;
  }
-
 
 function usuarioSetFile(){
   if (!empty($_FILES["user-file"])){
@@ -262,14 +260,22 @@ function usuarioSetFile(){
       if(  ($file_size / 1024) < 1024 ){
         $miArchivo =  dirname( __DIR__ . '../');
         //$miArchivo = 'sdfsdf/sr'
-        $miArchivo .=  "\\" ."img". "\\";
+        // $miArchivo .=  "\\" ."img". "\\";
+        $miArchivo .=  "/" ."img". "/";
         $miArchivo .= sha1($_SESSION["email"]) . "." . $file_extension;
-        move_uploaded_file( $file, $miArchivo);
+        // Actualizar extensión archivo perfil usuario
+        $rstExtImagen = usuarioUpdExtImagen($_SESSION["email"],$file_extension );
+        if($rstExtImagen) {
+          $_SESSION["extImagen"]  = $file_extension;
+          move_uploaded_file( $file, $miArchivo);
+        }
       } else {  // imagen de tamaño mayor a 1M.
-        mensaje("incorrecto","El archivo supera 1M de tamaño");
+         $mensajetexto[] ="El archivo supera 1M de tamaño";
+        mensaje("incorrecto",$mensajetexto);
       }
     } else {
-      mensaje("incorrecto", "Error al subir el archivo, intenteló nuevamente");
+      $mensajetexto[] = "Error al subir el archivo, intenteló nuevamente";
+      mensaje("incorrecto", $mensajetexto);
     }
   }
 }
@@ -277,10 +283,12 @@ function usuarioSetFile(){
 function usuarioGetfile(){
     $miArchivo =  dirname( __DIR__ . '../');
     //$miArchivo = 'sdfsdf/sr'
-    $miArchivo .=  "\\" ."img". "\\";
-    $miArchivo .= sha1($_SESSION["email"]) . ".jpg";  //  . $file_extension;
+    // $miArchivo .=  "\\" ."img". "\\";
+    $miArchivo .=  "/" ."img". "/";
+    $miArchivo .= sha1($_SESSION["email"]) . '.' .  $_SESSION["extImagen"];  //  . $file_extension;
     if(file_exists( $miArchivo )){
-      return '.' . '\\' . 'assets' . '\\' . 'img' . '\\' . sha1($_SESSION["email"]) . ".jpg";
+      //return '.' . '\\' . 'assets' . '\\' . 'img' . '\\' . sha1($_SESSION["email"]) . '.' . $_SESSION["extImagen"];
+      return '.' . '/' . 'assets' . '/' . 'img' . '/' . sha1($_SESSION["email"]) . '.' . $_SESSION["extImagen"];
     } else {
       return "";
     }
@@ -295,7 +303,7 @@ function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
       // Se informó el mail
 
       // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $fileCuentasR = @fopen("cuentasUsuarios.json", "r");
+      $fileCuentasR = @fopen("accountUser.json", "r");
       // abrir un temporal para ir guardando las lineas leías, al final se reemplazan los archivos.
       $fileCuentasW = @fopen("cuentasUsuariosTmp.json", "w");
       // Recorrer el archivo de cuentas buscando por mail el usuario.
@@ -314,7 +322,8 @@ function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
               $linea =  json_encode($regUsuario) . PHP_EOL ;
               $correcto = true ;
             } else {
-              mensaje('incorrecto', 'La clave actual no corresponde');
+              $mensajetexto[] = 'La clave actual no corresponde';
+              mensaje('incorrecto', $mensajetexto);
               return 0;
             }
           }
@@ -324,11 +333,13 @@ function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
           // pasar la linea leida o editada al nuevo archivo.
 
       } else {
-        mensaje('incorrecto', 'Inconveniente de conección a usuarios');
+        $mensajetexto[] = 'Inconveniente de conección a usuarios';
+        mensaje('incorrecto', $mensajetexto );
         return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
       }
       if (!feof($fileCuentasR)) {
-        mensaje('incorrecto', 'Error inesperado');
+        $mensajetexto[] = 'Error inesperado';
+        mensaje('incorrecto', $mensajetexto);
         return 0;
         // echo "Error: fallo inesperado de fgets()\n";
       }
@@ -336,46 +347,94 @@ function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
       fclose($fileCuentasW);
       if($correcto){
         // Renombrar los archivos origen en old .. tmp en origen
-        rename( 'cuentasUsuariosTmp.json', 'cuentasUsuarios.json');
-
-        mensaje('correcto', 'Su clave ha sido modificada');
+        rename( 'cuentasUsuariosTmp.json', 'accountUser.json');
+        $mensajetexto[] = 'Su clave ha sido modificada';
+        mensaje('correcto', $mensajetexto );
         return 1;
       } else {
         // Borrar el archivo old
         unlink('cuentasUsuariosTmp.json');
       }
-      mensaje('incorrecto', 'No se encontó el usuario para cambio de clave');
+      $mensajetexto[] = 'No se encontó el usuario para cambio de clave';
+      mensaje('incorrecto', $mensajetexto);
       return 0;  // Buscó y no econtró email
     } else {
         // echo "Ups!!! de file";
-        mensaje('incorrecto', 'No hay usuario para cambio de clave');
+        $mensajetexto[] = 'No hay usuario para cambio de clave';
+        mensaje('incorrecto', $mensajetexto);
         return 0 ; // Debe informar el mail
     }
   } else {
-      mensaje('incorrecto', 'La nueva calve y su validación no coinciden');
+      $mensajetexto[] = 'La nueva calve y su validación no coinciden';
+      mensaje('incorrecto', $mensajetexto);
       return 0 ; // Debe informar el mail
   }
 }
-  /*
-  $readisng = fopen('myfile', 'r');
-  $writing = fopen('myfile.tmp', 'w');
 
-  $replaced = false;
+function usuarioUpdExtImagen($email, $extImagen){
+  $errores = [];
+  // VALIDAR SI NUEVA CLAVE Y VALIDACIÓN SON LO MISMO .. ANTES DE HACER OPERATORIA
 
-  while (!feof($reading)) {
-    $line = fgets($reading);
-    if (stristr($line,'certain word')) {
-      $line = "replacement line!\n";
-      $replaced = true;
+    if (!empty($email) )  {
+      // Se informó el mail
+
+      // buscar archivo json.. recorrerlo hasta encontrar mail.
+      $fileCuentasR = @fopen("accountUser.json", "r");
+      // abrir un temporal para ir guardando las lineas leías, al final se reemplazan los archivos.
+      $fileCuentasW = @fopen("cuentasUsuariosTmp.json", "w");
+      // Recorrer el archivo de cuentas buscando por mail el usuario.
+      if ($fileCuentasR) {
+        while (($linea = fgets($fileCuentasR, 4096)) !== false) {
+          // lleva la lína en json a array
+          $regUsuario = json_decode($linea, true);
+          // valida mail de linea con mail de usuario a cambiar clave.
+          if (trim($regUsuario['email']) == trim($email)) {
+            // USUARIO A VALIDAR $oldPassword en sha1.. si es igual. hay que actualizar.
+            // reemplazar el campo de clave y luego volver a armar la línea.
+            // Verifica si la clave anterior ingresada coincide.
+
+
+              $regUsuario['extImagen'] = $extImagen ;
+              $linea =  json_encode($regUsuario) . PHP_EOL ;
+              $correcto = true ;
+
+          }
+          fputs($fileCuentasW, $linea);
+        }
+
+          // pasar la linea leida o editada al nuevo archivo.
+
+      } else {
+        $mensajetexto[] = 'Inconveniente de conección a usuarios';
+        mensaje('incorrecto', $mensajetexto);
+        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
+      }
+      if (!feof($fileCuentasR)) {
+        $mensajetexto[] = 'Error inesperado';
+        mensaje('incorrecto', $mensajetexto);
+        return 0;
+        // echo "Error: fallo inesperado de fgets()\n";
+      }
+      fclose($fileCuentasR);
+      fclose($fileCuentasW);
+      if($correcto){
+        // Renombrar los archivos origen en old .. tmp en origen
+        rename( 'cuentasUsuariosTmp.json', 'accountUser.json');
+        $mensajetexto[] = 'Archivo modificado';
+        mensaje('correcto', $mensajetexto);
+        return 1;
+      } else {
+        // Borrar el archivo old
+        unlink('cuentasUsuariosTmp.json');
+      }
+      $mensajetexto[] = 'No se encontó el usuario para cambio de clave';
+      mensaje('incorrecto', $mensajetexto );
+      return 0;  // Buscó y no econtró email
+    } else {
+        // echo "Ups!!! de file";
+        $mensajetexto[] = 'No hay usuario para cambio de clave';
+        mensaje('incorrecto', $mensajetexto);
+        return 0 ; // Debe informar el mail
     }
-    fputs($writing, $line);
-  }
-  fclose($reading); fclose($writing);
-  // might as well not overwrite the file if we didn't replace anything
-  if ($replaced)
-  {
-    rename('myfile.tmp', 'myfile');
-  } else {
 
-  }
-  */
+}
