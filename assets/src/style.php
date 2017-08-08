@@ -11,7 +11,7 @@
   .row{
     margin-right: 15px;
     margin-left: 0px;
-}
+
   }
   .navbar {
     margin-bottom:8px;
@@ -71,6 +71,7 @@
     color: #fff;
     background-color: #d9230f;
     border-color: #d9230f;
+  }
   .panel-info {
     border-color: #d9230f;
   }
@@ -109,6 +110,8 @@
     height: 200px;
     width: 200px;
     object-fit: cover;
+    max-width: 80px;
+    max-height: 80px;
   }
   .container-inf {
     border-bottom: 1px solid #ff5821;

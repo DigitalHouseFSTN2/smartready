@@ -27,7 +27,7 @@
 
        else {
 
-         $mensajetexto = 'Fallo de autenticación! !';
+         $mensajetexto[] = 'Fallo de autenticación! !';
          mensaje('incorrecto', $mensajetexto);
          //echo "<p><a href='prueba-cookies.php'>Volver</a>";
      }
