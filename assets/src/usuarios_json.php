@@ -35,31 +35,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
           $numero_aleatorio = 0;
           $remember         = 0;
         }
-        //+ Inicio de codigo MySQL
-        $usuario = 'root';
-        $contraseña = 'root';
-        $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
-        $db->beginTransaction();
 
-        try{
-          // 1* Buscar el usuario
-          $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
-          $statement->bindParam(':name', $nombre, PDO::PARAM_STR);
-          $statement->bindParam(':lastname', $apellido, PDO::PARAM_STR);
-          $statement->bindParam(':email', $email, PDO::PARAM_STR);
-          $statement->bindParam(':password', $password, PDO::PARAM_STR);
-          $statement->bindParam(':remember', $remember, PDO::PARAM_INT);
-          $statement->bindParam(':cookie_rnd', 0, PDO::PARAM_INT);
-          $statement->bindParam(':extImagen', '', PDO::PARAM_STR);
-
-          $statement->execute();
-          $db->commit();
-        catch(PDOException $ex){
-
-          $db->rollBack();
-          echo $ex->getMessage();
-        }
-        /* Gestión por JSON.
         $jsonUser = json_encode([
             'name'      => $nombre,
             'lastname'  => $apellido,
@@ -75,7 +51,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
         $resultado = fwrite($fp, $jsonUser . PHP_EOL);
         fclose($fp);
-        */ //Codigo por json
+
        if ($remember == 1) {
         setcookie("id_usuario", $nombre.$apellido , time()+(60*60*24*365));
         setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
@@ -104,29 +80,6 @@ function usuarioFindMail($mail){
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
-
-
-    $usuario = 'root';
-    $contraseña = 'root';
-    $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
-
-    try{
-      // 1* Buscar el usuario
-      $statement = $db->prepare("SELECT id,name,lastname,email,password FROM USER WHERE email=:email");
-      $statement->bindParam(':email', $email, PDO::PARAM_STR);
-
-      $statement->execute();
-      if($statement->rowCount()>0){
-        $errores['email'] = 'Ya existe una cuenta con este email';
-        return $errores;
-
-      }
-      // $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-    catch(PDOException $ex){
-
-      echo $ex->getMessage();
-    }
 
     $filecuentas = @fopen("accountUser.json", "r");
     if ($filecuentas) {
