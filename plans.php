@@ -27,7 +27,7 @@
       ?>
 
       <?php // PRESENTACIÓN DE SERVICIOS
-        include('./assets/src/inc_planes.php'); 
+        include('./assets/src/inc_planes.php');
         include('./assets/src/inc_presentacion.php');
   	  ?>
 
@@ -71,7 +71,7 @@
 
 
       <?php // INFORMACIÓN DE NOSOTROS
-        // include("assets/src/nosotros.php") ;
+        // include("assets/src/we_are.php") ;
       ?>
 
       <aside>
