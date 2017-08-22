@@ -5,16 +5,18 @@ require_once "messages.php";
 
 function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $remember){
 
-
+    echo "entro <br>";
     // Validar!
     $errores = usuarioVal($nombre, $apellido, $email, $password, $valPassword);
     $numero_aleatorio = 0;
 
+        echo "valido <br>";
 
     if (empty($errores)) {
       // No hubo errores
       $errores = usuarioFindMail($email);
 
+      echo "buscó mail <br>";
       if(empty($errores)){
         $password = sha1($password);
         // Transformarlo a json
@@ -54,28 +56,11 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
           $statement->execute();
           $db->commit();
-        catch(PDOException $ex){
+        } catch (PDOException $e) {
 
           $db->rollBack();
           echo $ex->getMessage();
         }
-        /* Gestión por JSON.
-        $jsonUser = json_encode([
-            'name'      => $nombre,
-            'lastname'  => $apellido,
-            'email'     => $email,
-            'password'  => $password,
-            'remember'  => $remember,
-            'cookie_rnd'=> $numero_aleatorio,
-            'extImagen'=>  ''
-
-        ]);
-
-        $fp = fopen("accountUser.json", "a+");
-
-        $resultado = fwrite($fp, $jsonUser . PHP_EOL);
-        fclose($fp);
-        */ //Codigo por json
        if ($remember == 1) {
         setcookie("id_usuario", $nombre.$apellido , time()+(60*60*24*365));
         setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
@@ -123,7 +108,7 @@ function usuarioFindMail($mail){
       }
       // $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    catch(PDOException $ex){
+    } catch(PDOException $ex){
 
       echo $ex->getMessage();
     }
@@ -262,8 +247,9 @@ function usuarioAccess($mail,$password)  {
 function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
     $mensajetipo = "";
-    $mensajetexto= "";
+    $mensajetexto= [];
 
+    echo "UsuarioVal->entro <br>";
     if ( $password <> $valPassword){
         $mensajetexto[] = 'La clave no coincide con la validación';
     }
@@ -288,9 +274,15 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
       }
 
      if (count($mensajetexto) > 0 ) {
+
+      echo "UsuarioVal->incorrecto <br>";
+      var_dump($mensajetexto);
+
       mensaje('incorrecto', $mensajetexto);
       $errores = "Error!";
     }
+
+    echo "UsuarioVal->correcto <br>";
     return $errores;
  }
 
