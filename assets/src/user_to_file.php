@@ -40,19 +40,32 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         //+ Inicio de codigo MySQL
         $usuario = 'root';
         $contraseña = 'root';
-        $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
+        $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
         $db->beginTransaction();
 
         try{
           // 1* Buscar el usuario
+
+          //$statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
           $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
-          $statement->bindParam(':name', $nombre, PDO::PARAM_STR);
+
+					$statement->bindParam(':name', $nombre);
+					$statement->bindParam(':lastname', $apellido);
+					$statement->bindParam(':email', $email);
+					$statement->bindParam(':password', $password);
+					$statement->bindParam(':remember', $remember);
+					$statement->bindParam(':cookie_rnd', 0);
+					$statement->bindParam(':extImagen', '');
+
+			 /*
+			 $statement->bindParam(':name', $nombre, PDO::PARAM_STR);
           $statement->bindParam(':lastname', $apellido, PDO::PARAM_STR);
           $statement->bindParam(':email', $email, PDO::PARAM_STR);
           $statement->bindParam(':password', $password, PDO::PARAM_STR);
           $statement->bindParam(':remember', $remember, PDO::PARAM_INT);
           $statement->bindParam(':cookie_rnd', 0, PDO::PARAM_INT);
           $statement->bindParam(':extImagen', '', PDO::PARAM_STR);
+			 */
 
           $statement->execute();
           $db->commit();
@@ -84,28 +97,33 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 }
 
 function usuarioFindMail($mail){
-  $errores = [];
-  if (!empty($mail) )  {
+  	$errores = [];
+  	if (!empty($mail) )  {
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
-
-
+	 echo "usuarioFindMail - entró <br>";
     $usuario = 'root';
     $contraseña = 'root';
-    $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
 
-    try{
+	 try{
+    	$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+
       // 1* Buscar el usuario
       $statement = $db->prepare("SELECT id,name,lastname,email,password FROM USER WHERE email=:email");
+
       $statement->bindParam(':email', $email, PDO::PARAM_STR);
 
       $statement->execute();
+
+  	 echo "usuarioFindMail - ejecutó <br>";
+
       if($statement->rowCount()>0){
         $errores['email'] = 'Ya existe una cuenta con este email';
-        return $errores;
 
       }
+		var_dump($errores);
+		return $errores;
       // $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     } catch(PDOException $ex){
@@ -146,6 +164,17 @@ function usuarioAccess($mail,$password)  {
 
 
   if (!empty($mail) && !empty($password))  {
+
+	  // Armado de conección
+	  $usuario = 'root';
+	  $contraseña = 'root';
+
+	try{
+
+	  $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+		$statment = $db->prepare("SELECT id,name,lastname,email,password  FROM USER WHERE email = :email");
+		$statement->bindParam(':email', $mail);
+		$statement->execute();
 
       // buscar archivo json.. recorrerlo hasta encontrar mail.
       $filecuentas = @fopen("accountUser.json", "r");
