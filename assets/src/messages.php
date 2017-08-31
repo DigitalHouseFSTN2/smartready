@@ -5,8 +5,9 @@
 
 function mensaje($mensajetipo, $inMensajetexto){
 
-// var_dump($inMensajetexto);
+ var_dump($inMensajetexto);
 //var_dump($mensajetexto);
+
   foreach($inMensajetexto as $mensajetexto){
     if ($mensajetipo == 'correcto') {
     echo  "<div class='alert alert-success fade in'>";

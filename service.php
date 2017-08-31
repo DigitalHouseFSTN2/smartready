@@ -69,7 +69,7 @@
 
 
     <?php // INFORMACIÓN DE NOSTROS
-      // include('./assets/src/nosotros.php');
+      // include('./assets/src/we_are.php');
     ?>
 
     <aside>
