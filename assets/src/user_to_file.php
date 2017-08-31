@@ -7,6 +7,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
     echo "entro <br>";
     // Validar!
+
     $errores = usuarioVal($nombre, $apellido, $email, $password, $valPassword);
     $numero_aleatorio = 0;
 
@@ -40,7 +41,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         //+ Inicio de codigo MySQL
         $usuario = 'root';
         $contraseña = 'root';
-        $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
+        $db = PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
         $db->beginTransaction();
 
         try{
@@ -93,12 +94,12 @@ function usuarioFindMail($mail){
 
     $usuario = 'root';
     $contraseña = 'root';
-    $db = PDO('mysql:host=localhost;dbname=smartready', $usuario, $contraseña);
+    $db = PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
 
     try{
       // 1* Buscar el usuario
       $statement = $db->prepare("SELECT id,name,lastname,email,password FROM USER WHERE email=:email");
-      $statement->bindParam(':email', $email, PDO::PARAM_STR);
+      $statement->bindParam(':email', $email );
 
       $statement->execute();
       if($statement->rowCount()>0){
