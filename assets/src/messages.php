@@ -5,7 +5,7 @@
 
 function mensaje($mensajetipo, $inMensajetexto){
 
- var_dump($inMensajetexto);
+ // var_dump($inMensajetexto);
 //var_dump($mensajetexto);
 
   foreach($inMensajetexto as $mensajetexto){

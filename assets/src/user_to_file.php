@@ -87,7 +87,8 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
 function usuarioFindMail($mail){
   	$errores = [];
-  	if (!empty($mail) )  {
+  if (!empty($mail) )
+	{
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
@@ -95,7 +96,8 @@ function usuarioFindMail($mail){
     $usuario = 'root';
     $contraseña = 'root';
 
-	 try{
+	 	try
+		{
     	$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
 
       // 1* Buscar el usuario
@@ -111,15 +113,15 @@ function usuarioFindMail($mail){
         $errores['email'] = 'Ya existe una cuenta con este email';
 
       }
-		var_dump($errores);
-		return $errores;
+			var_dump($errores);
+			return $errores;
       // $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     } catch(PDOException $ex){
 
       echo $ex->getMessage();
     }
-
+		/*
     $filecuentas = @fopen("accountUser.json", "r");
     if ($filecuentas) {
       while (($linea = fgets($filecuentas, 4096)) !== false) {
@@ -142,12 +144,14 @@ function usuarioFindMail($mail){
         // echo "Ups!!! de file";
         return $errores ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
     }
+		*/
   } else {
     return $errores ; // Debe informar el mail
   }
 }
 
 function usuarioAccess($mail,$password)  {
+
   $mensajetipo = "";
   $mensajetexto =  array();
 
@@ -157,107 +161,44 @@ function usuarioAccess($mail,$password)  {
 	  // Armado de conección
 	  $usuario = 'root';
 	  $contraseña = 'root';
-		/*
-	try{
 
-	  $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
-		$statment = $db->prepare("SELECT id,name,lastname,email,password  FROM USER WHERE email = :email");
-		$statement->bindParam(':email', $mail);
-		$statement->execute();
-		*/
-      // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $filecuentas = @fopen("accountUser.json", "r");
+		try
+		{
+			$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
 
-      // echo "Lectura archivo <br>";
+			 // 1* Buscar el usuario
+			$statement = $db->prepare("SELECT id,name,lastname,email,password,extImagen FROM USER WHERE email=:email");
+			$statement->bindParam(':email', $mail);
+			$statement->execute();
+			$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-      if ($filecuentas) {
+			if($statement->rowCount()>0){
+				$password = sha1($password);
 
-         while (($linea = fgets($filecuentas, 4096)) !== false) {
+				if ( $result["password"] == $password)
+				{
+					// Gestionar la sessión .
 
-          // echo "Linea" . $linea . '<br>' ;
-          $regUsuario = json_decode($linea, true);
+	        $_SESSION["name"] =  $result["name"] ;
+	        $_SESSION["email"] =  $result["email"] ;
+	        $_SESSION["lastName"] =  $result["lastname"] ;
+	        $_SESSION["extImagen"] =  $result["extImagen"] ;
 
-          /*echo "array usuario ";
-          var_dump($regUsuario);
-          echo "<br>";*/
+					return 1;
+				} else
+				{
+					return 0;
+				}
+	 		}
+		} catch (Exception $ex )
+		{
+			echo $ex->getMessage();
+			return 0 ;
+		}
 
-          if (trim($regUsuario['email']) == trim($mail))
-          {
-            $password = sha1($password);
-
-            if ($regUsuario['password'] == $password){
-
-            $_SESSION["name"]       = $regUsuario["name"];
-            $_SESSION["lastName"]   = $regUsuario["lastname"];
-            $_SESSION["email"]      = $regUsuario["email"];
-            $_SESSION["password"]   = $password;
-            $_SESSION["remember"]   = $regUsuario["remember"];
-            $_SESSION["cookie_rnd"] = $regUsuario["cookie_rnd"];
-            $_SESSION["extImagen"]  = $regUsuario["extImagen"];
-
-            // Una vez que tengo el usuario busco si tiene cookie
-
-
-            if ($_SESSION["remember"] == 1) {
-
-              //primero tengo que ver si el usuario está memorizado en una cookie
-              if (isset($_COOKIE["id_usuario"]) && isset($_COOKIE["marca_aleatoria_usuario"])){
-                //Tengo cookies memorizadas
-                //además voy a comprobar que esas variables no estén vacías
-
-                if ($_COOKIE["id_usuario"]!="" || $_COOKIE["marca_aleatoria_usuario"]!=""){
-                 //Voy a ver si corresponden con algún usuario
-
-                  if ($_COOKIE["id_usuario"] == $_SESSION["name"].$_SESSION["lastName"] && $_COOKIE["marca_aleatoria_usuario"] == $_SESSION["cookie_rnd"]) {
-
-                    $mensajetexto[] = 'El usuario tiene una cookie guardada....';
-                    mensaje('aviso', $mensajetexto);
-                    return 1;
-
-                  }
-
-                  else {
-
-                    $mensajetexto[] = 'Cookie guardada incorrectamente....';
-                    mensaje('alerta', $mensajetexto);
-                    return 0;
-                }
-              }
-            }
-
-
-           }
-           else {
-
-             $mensajetexto[] = 'El usuario NO tiene una cookie guardada....';
-             mensaje('alerta', $mensajetexto);
-             return 1;
-           }
-          }
-           else {
-            $mensajetexto[] = 'No pudo encontrarse el usuario, por favor reintente !';
-            mensaje('incorrecto', $mensajetexto);
-            return 0;
-          }
-        }
-          // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
-          // luego comparar con la clave.
-        }
-
-        if (!feof($filecuentas)) {
-          $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
-          mensaje('incorrecto', $mensajetexto);
-          return 0;
-        }
-        fclose($filecuentas);
-      } else {
-        $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
-        mensaje('incorrecto', $mensajetexto);
-        // echo "Ups!!! de file";
-        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
-      }
   }
   else  {
+
       return 0; // "Debe informar usuario y clave";
   }
 }
