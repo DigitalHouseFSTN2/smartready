@@ -2,6 +2,10 @@
   require_once "./assets/src/validate.php";
   require_once "./assets/src/user_to_db.php";
 
+  $data_source = getenv("DATA_SOURCE");
+  //var_dump($data_source);
+
+
   session_start();
 
   // var_dump($_REQUEST);
