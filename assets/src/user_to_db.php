@@ -41,19 +41,25 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         //+ Inicio de codigo MySQL
         $usuario = 'root';
         $contraseña = 'root';
+<<<<<<< HEAD:assets/src/user_to_file.php
         $db = PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+=======
+        $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+>>>>>>> 94f5690386a82d2a4a8a5d978735efeee6d1cc8f:assets/src/user_to_db.php
         $db->beginTransaction();
 
         try{
           // 1* Buscar el usuario
-          $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
-          $statement->bindParam(':name', $nombre, PDO::PARAM_STR);
-          $statement->bindParam(':lastname', $apellido, PDO::PARAM_STR);
-          $statement->bindParam(':email', $email, PDO::PARAM_STR);
-          $statement->bindParam(':password', $password, PDO::PARAM_STR);
-          $statement->bindParam(':remember', $remember, PDO::PARAM_INT);
-          $statement->bindParam(':cookie_rnd', 0, PDO::PARAM_INT);
-          $statement->bindParam(':extImagen', '', PDO::PARAM_STR);
+
+          $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember) VALUES(:name,:lastname,:email,:password,:remember)");
+
+					$statement->bindParam(':name', $nombre);
+					$statement->bindParam(':lastname', $apellido);
+					$statement->bindParam(':email', $email);
+					$statement->bindParam(':password', $password);
+					$statement->bindParam(':remember', $remember);
+					//$statement->bindParam(':cookie_rnd', 12345678900);
+					//$statement->bindParam(':extImagen', '   ');
 
           $statement->execute();
           $db->commit();
@@ -85,35 +91,50 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 }
 
 function usuarioFindMail($mail){
-  $errores = [];
-  if (!empty($mail) )  {
+  	$errores = [];
+  if (!empty($mail) )
+	{
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
-
-
+	 echo "usuarioFindMail - entró <br>";
     $usuario = 'root';
     $contraseña = 'root';
+<<<<<<< HEAD:assets/src/user_to_file.php
     $db = PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+=======
+>>>>>>> 94f5690386a82d2a4a8a5d978735efeee6d1cc8f:assets/src/user_to_db.php
 
-    try{
+	 	try
+		{
+    	$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+
       // 1* Buscar el usuario
       $statement = $db->prepare("SELECT id,name,lastname,email,password FROM USER WHERE email=:email");
+<<<<<<< HEAD:assets/src/user_to_file.php
       $statement->bindParam(':email', $email );
+=======
+
+      $statement->bindParam(':email', $email);
+>>>>>>> 94f5690386a82d2a4a8a5d978735efeee6d1cc8f:assets/src/user_to_db.php
 
       $statement->execute();
+
+  	 echo "usuarioFindMail - ejecutó <br>";
+
       if($statement->rowCount()>0){
         $errores['email'] = 'Ya existe una cuenta con este email';
-        return $errores;
 
       }
+			var_dump($errores);
+			return $errores;
       // $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     } catch(PDOException $ex){
 
       echo $ex->getMessage();
     }
-
+		/*
     $filecuentas = @fopen("accountUser.json", "r");
     if ($filecuentas) {
       while (($linea = fgets($filecuentas, 4096)) !== false) {
@@ -136,111 +157,61 @@ function usuarioFindMail($mail){
         // echo "Ups!!! de file";
         return $errores ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
     }
+		*/
   } else {
     return $errores ; // Debe informar el mail
   }
 }
 
 function usuarioAccess($mail,$password)  {
+
   $mensajetipo = "";
   $mensajetexto =  array();
 
 
   if (!empty($mail) && !empty($password))  {
 
-      // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $filecuentas = @fopen("accountUser.json", "r");
+	  // Armado de conección
+	  $usuario = 'root';
+	  $contraseña = 'root';
 
-      // echo "Lectura archivo <br>";
+		try
+		{
+			$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
 
-      if ($filecuentas) {
+			 // 1* Buscar el usuario
+			$statement = $db->prepare("SELECT id,name,lastname,email,password,extImagen FROM USER WHERE email=:email");
+			$statement->bindParam(':email', $mail);
+			$statement->execute();
+			$result = $statement->fetch(PDO::FETCH_ASSOC);
 
-         while (($linea = fgets($filecuentas, 4096)) !== false) {
+			if($statement->rowCount()>0){
+				$password = sha1($password);
 
-          // echo "Linea" . $linea . '<br>' ;
-          $regUsuario = json_decode($linea, true);
+				if ( $result["password"] == $password)
+				{
+					// Gestionar la sessión .
 
-          /*echo "array usuario ";
-          var_dump($regUsuario);
-          echo "<br>";*/
+	        $_SESSION["name"] =  $result["name"] ;
+	        $_SESSION["email"] =  $result["email"] ;
+	        $_SESSION["lastName"] =  $result["lastname"] ;
+	        $_SESSION["extImagen"] =  $result["extImagen"] ;
 
-          if (trim($regUsuario['email']) == trim($mail))
-          {
-            $password = sha1($password);
+					return 1;
+				} else
+				{
+					return 0;
+				}
+	 		}
+		} catch (Exception $ex )
+		{
+			echo $ex->getMessage();
+			return 0 ;
+		}
 
-            if ($regUsuario['password'] == $password){
-
-            $_SESSION["name"]       = $regUsuario["name"];
-            $_SESSION["lastName"]   = $regUsuario["lastname"];
-            $_SESSION["email"]      = $regUsuario["email"];
-            $_SESSION["password"]   = $password;
-            $_SESSION["remember"]   = $regUsuario["remember"];
-            $_SESSION["cookie_rnd"] = $regUsuario["cookie_rnd"];
-            $_SESSION["extImagen"]  = $regUsuario["extImagen"];
-
-            // Una vez que tengo el usuario busco si tiene cookie
-
-
-            if ($_SESSION["remember"] == 1) {
-
-              //primero tengo que ver si el usuario está memorizado en una cookie
-              if (isset($_COOKIE["id_usuario"]) && isset($_COOKIE["marca_aleatoria_usuario"])){
-                //Tengo cookies memorizadas
-                //además voy a comprobar que esas variables no estén vacías
-
-                if ($_COOKIE["id_usuario"]!="" || $_COOKIE["marca_aleatoria_usuario"]!=""){
-                 //Voy a ver si corresponden con algún usuario
-
-                  if ($_COOKIE["id_usuario"] == $_SESSION["name"].$_SESSION["lastName"] && $_COOKIE["marca_aleatoria_usuario"] == $_SESSION["cookie_rnd"]) {
-
-                    $mensajetexto[] = 'El usuario tiene una cookie guardada....';
-                    mensaje('aviso', $mensajetexto);
-                    return 1;
-
-                  }
-
-                  else {
-
-                    $mensajetexto[] = 'Cookie guardada incorrectamente....';
-                    mensaje('alerta', $mensajetexto);
-                    return 0;
-                }
-              }
-            }
-
-
-           }
-           else {
-
-             $mensajetexto[] = 'El usuario NO tiene una cookie guardada....';
-             mensaje('alerta', $mensajetexto);
-             return 1;
-           }
-          }
-           else {
-            $mensajetexto[] = 'No pudo encontrarse el usuario, por favor reintente !';
-            mensaje('incorrecto', $mensajetexto);
-            return 0;
-          }
-        }
-          // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
-          // luego comparar con la clave.
-        }
-
-        if (!feof($filecuentas)) {
-          $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
-          mensaje('incorrecto', $mensajetexto);
-          return 0;
-        }
-        fclose($filecuentas);
-      } else {
-        $mensajetexto[] = 'No pudo accederse a la base de usuarios, por favor reintente !';
-        mensaje('incorrecto', $mensajetexto);
-        // echo "Ups!!! de file";
-        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
-      }
   }
   else  {
+
       return 0; // "Debe informar usuario y clave";
   }
 }
