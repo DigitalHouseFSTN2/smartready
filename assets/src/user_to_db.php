@@ -38,6 +38,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
           $remember         = 0;
         }
         //+ Inicio de codigo MySQL
+
         $usuario = 'root';
         $contraseña = 'root';
         $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
@@ -45,16 +46,18 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
         try{
           // 1* Buscar el usuario
+					$extImagen= '';
+					$cookie = 0;
 
-          $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember) VALUES(:name,:lastname,:email,:password,:remember)");
+          $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
 
-					$statement->bindParam(':name', $nombre);
-					$statement->bindParam(':lastname', $apellido);
-					$statement->bindParam(':email', $email);
-					$statement->bindParam(':password', $password);
-					$statement->bindParam(':remember', $remember);
-					//$statement->bindParam(':cookie_rnd', 12345678900);
-					//$statement->bindParam(':extImagen', '   ');
+					$statement->bindParam(':name', $nombre,PDO::PARAM_STR);
+					$statement->bindParam(':lastname', $apellido,PDO::PARAM_STR);
+					$statement->bindParam(':email', $email,PDO::PARAM_STR);
+					$statement->bindParam(':password', $password, PDO::PARAM_STR);
+					$statement->bindParam(':remember', $remember, PDO::PARAM_INT);
+					$statement->bindParam(':cookie_rnd', $cookie, PDO::PARAM_INT);
+					$statement->bindParam(':extImagen', $extImagen,PDO::PARAM_STR);
 
           $statement->execute();
           $db->commit();
@@ -299,74 +302,60 @@ function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
   if( $newPassword == $valPassword){
     if (!empty($email) )  {
       // Se informó el mail
+			$usuario = 'root';
+			$contraseña = 'root';
 
-      // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $fileCuentasR = @fopen("accountUser.json", "r");
-      // abrir un temporal para ir guardando las lineas leías, al final se reemplazan los archivos.
-      $fileCuentasW = @fopen("cuentasUsuariosTmp.json", "w");
-      // Recorrer el archivo de cuentas buscando por mail el usuario.
-      if ($fileCuentasR) {
-        while (($linea = fgets($fileCuentasR, 4096)) !== false) {
-          // lleva la lína en json a array
-          $regUsuario = json_decode($linea, true);
-          // valida mail de linea con mail de usuario a cambiar clave.
-          if (trim($regUsuario['email']) == trim($email)) {
-            // USUARIO A VALIDAR $oldPassword en sha1.. si es igual. hay que actualizar.
-            // reemplazar el campo de clave y luego volver a armar la línea.
-            // Verifica si la clave anterior ingresada coincide.
-            $sha1Password = sha1($oldPassword);
-            if ($regUsuario['password'] == $sha1Password){
-              $regUsuario['password'] = sha1($newPassword);
-              $linea =  json_encode($regUsuario) . PHP_EOL ;
-              $correcto = true ;
-            } else {
-              $mensajetexto[] = 'La clave actual no corresponde';
-              mensaje('incorrecto', $mensajetexto);
-              return 0;
-            }
-          }
-          fputs($fileCuentasW, $linea);
-        }
+			try	{
 
-          // pasar la linea leida o editada al nuevo archivo.
+				$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
 
-      } else {
-        $mensajetexto[] = 'Inconveniente de conección a usuarios';
-        mensaje('incorrecto', $mensajetexto );
-        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
-      }
-      if (!feof($fileCuentasR)) {
-        $mensajetexto[] = 'Error inesperado';
-        mensaje('incorrecto', $mensajetexto);
-        return 0;
-        // echo "Error: fallo inesperado de fgets()\n";
-      }
-      fclose($fileCuentasR);
-      fclose($fileCuentasW);
-      if($correcto){
-        // Renombrar los archivos origen en old .. tmp en origen
-        rename( 'cuentasUsuariosTmp.json', 'accountUser.json');
-        $mensajetexto[] = 'Su clave ha sido modificada';
-        mensaje('correcto', $mensajetexto );
-        return 1;
-      } else {
-        // Borrar el archivo old
-        unlink('cuentasUsuariosTmp.json');
-      }
-      $mensajetexto[] = 'No se encontó el usuario para cambio de clave';
-      mensaje('incorrecto', $mensajetexto);
-      return 0;  // Buscó y no econtró email
-    } else {
-        // echo "Ups!!! de file";
-        $mensajetexto[] = 'No hay usuario para cambio de clave';
-        mensaje('incorrecto', $mensajetexto);
-        return 0 ; // Debe informar el mail
-    }
-  } else {
-      $mensajetexto[] = 'La nueva calve y su validación no coinciden';
-      mensaje('incorrecto', $mensajetexto);
-      return 0 ; // Debe informar el mail
-  }
+				 // 1* Buscar el usuario
+				$statement = $db->prepare("SELECT id,name,lastname,email,password,extImagen FROM USER WHERE email=:email");
+				$statement->bindParam(':email', $email);
+				$statement->execute();
+				$result = $statement->fetch(PDO::FETCH_ASSOC);
+				if($statement->rowCount()>0)
+				{
+					$password = sha1($oldPassword);
+
+					if ( $result["password"] == $password)
+					{
+
+						// Gestionar la sessión .
+						// Actualizar la clave del usuario .
+						$password = 	sha1($newPassword);
+
+	 					$statement = $db->prepare("UPDATE USER SET password=:password WHERE email=:email");
+	 					$statement->bindParam(':email', $email);
+	 					$statement->bindParam(':password', $password);
+
+						$statement->execute();
+
+						$mensajetexto[] = 'Su clave ha sido modificada';
+						mensaje('correcto', $mensajetexto );
+						return 1;
+					} else
+					{
+						$mensajetexto[] = 'La clave actual no corresponde';
+						mensaje('incorrecto', $mensajetexto);
+						return 0;
+					}
+		 		}
+			} catch (Exception $ex ){
+				$mensajetexto[] =  $ex->getMessage();
+				mensaje('incorrecto', $mensajetexto);
+				return 0 ;
+			}
+		} else {
+			$mensajetexto[] = 'No se ingresó identificación de usuario para cambio de clave';
+			mensaje('incorrecto', $mensajetexto);
+			return 0 ; // Debe informar el mail
+		}
+	} else {
+			$mensajetexto[] = 'La nueva calve y su validación no coinciden';
+			mensaje('incorrecto', $mensajetexto);
+			return 0 ; // Debe informar el mail
+	}
 }
 
 function usuarioUpdExtImagen($email, $extImagen){
@@ -376,58 +365,43 @@ function usuarioUpdExtImagen($email, $extImagen){
     if (!empty($email) )  {
       // Se informó el mail
 
-      // buscar archivo json.. recorrerlo hasta encontrar mail.
-      $fileCuentasR = @fopen("accountUser.json", "r");
-      // abrir un temporal para ir guardando las lineas leías, al final se reemplazan los archivos.
-      $fileCuentasW = @fopen("cuentasUsuariosTmp.json", "w");
-      // Recorrer el archivo de cuentas buscando por mail el usuario.
-      if ($fileCuentasR) {
-        while (($linea = fgets($fileCuentasR, 4096)) !== false) {
-          // lleva la lína en json a array
-          $regUsuario = json_decode($linea, true);
-          // valida mail de linea con mail de usuario a cambiar clave.
-          if (trim($regUsuario['email']) == trim($email)) {
-            // USUARIO A VALIDAR $oldPassword en sha1.. si es igual. hay que actualizar.
-            // reemplazar el campo de clave y luego volver a armar la línea.
-            // Verifica si la clave anterior ingresada coincide.
+				// Se informó el mail
+				$usuario = 'root';
+				$contraseña = 'root';
+
+				try	{
+
+					$db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+
+					 // 1* Buscar el usuario
+					$statement = $db->prepare("SELECT id,name,lastname,email,password,extImagen FROM USER WHERE email=:email");
+					$statement->bindParam(':email', $email);
+					$statement->execute();
+					$result = $statement->fetch(PDO::FETCH_ASSOC);
+					if($statement->rowCount()>0)
+					{
 
 
-              $regUsuario['extImagen'] = $extImagen ;
-              $linea =  json_encode($regUsuario) . PHP_EOL ;
-              $correcto = true ;
+							// Gestionar la sessión .
+							// Actualizar la clave del usuario .
 
-          }
-          fputs($fileCuentasW, $linea);
-        }
 
-          // pasar la linea leida o editada al nuevo archivo.
+							$statement = $db->prepare("UPDATE USER SET extImagen=:extImagen WHERE email=:email");
+							$statement->bindParam(':email', $email);
+							$statement->bindParam(':extImagen', $extImagen);
 
-      } else {
-        $mensajetexto[] = 'Inconveniente de conección a usuarios';
-        mensaje('incorrecto', $mensajetexto);
-        return 0 ; //"Ups!!! detectamos un inconveniente de conección intente mas tarde";
-      }
-      if (!feof($fileCuentasR)) {
-        $mensajetexto[] = 'Error inesperado';
-        mensaje('incorrecto', $mensajetexto);
-        return 0;
-        // echo "Error: fallo inesperado de fgets()\n";
-      }
-      fclose($fileCuentasR);
-      fclose($fileCuentasW);
-      if($correcto){
-        // Renombrar los archivos origen en old .. tmp en origen
-        rename( 'cuentasUsuariosTmp.json', 'accountUser.json');
-        $mensajetexto[] = 'Archivo modificado';
-        mensaje('correcto', $mensajetexto);
-        return 1;
-      } else {
-        // Borrar el archivo old
-        unlink('cuentasUsuariosTmp.json');
-      }
-      $mensajetexto[] = 'No se encontó el usuario para cambio de clave';
-      mensaje('incorrecto', $mensajetexto );
-      return 0;  // Buscó y no econtró email
+							$statement->execute();
+
+							$mensajetexto[] = 'Su imagen fué modificada';
+							mensaje('correcto', $mensajetexto );
+							return 1;
+
+					}
+				} catch (Exception $ex ){
+					$mensajetexto[] =  $ex->getMessage();
+					mensaje('incorrecto', $mensajetexto);
+					return 0 ;
+				}
     } else {
         // echo "Ups!!! de file";
         $mensajetexto[] = 'No hay usuario para cambio de clave';

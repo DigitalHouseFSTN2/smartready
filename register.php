@@ -1,12 +1,12 @@
 <?php
-  require_once "./assets/src/user_to_file.php";
+  require_once "./assets/src/user_to_db.php";
 
   session_start();
 
   $fueCompletado = isset($_REQUEST['submitted']);
 
   if($fueCompletado){
-	  echo "register.php completado"; 
+	  echo "register.php completado";
      $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'],$_REQUEST['remember'] );
 
      if( $resultado) {
