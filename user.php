@@ -3,7 +3,14 @@
   session_start();
 
 
-  require_once "./assets/src/user_to_db.php";
+	include "./assets/src/datasource.conf";
+
+	if($data_source=="DBAS"){
+  	require_once "./assets/src/user_to_db.php";
+	} else {
+		require_once "./assets/src/user_to_file.php";
+	}
+
   if (!empty($_FILES["user-file"])){
     usuarioSetFile();
   }

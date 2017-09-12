@@ -1,4 +1,5 @@
 <?php
+echo 'soy user_to_file.php';
 
 require_once "validate.php";
 require_once "messages.php";
