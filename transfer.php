@@ -16,6 +16,8 @@
   if ($fueCompletado){
 
 		if($data_source=="DBAS"){
+
+			$rslt = createTable();
 	    $rslt = transferUser();
 	    // echo "<br> resultado usaurioAcces " . $rslt . "<br>";
 	  	header ("Location:home.php");
