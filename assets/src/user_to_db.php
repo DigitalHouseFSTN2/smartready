@@ -5,18 +5,18 @@ require_once "messages.php";
 
 function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $remember){
 
-    echo "entro <br>";
+
     // Validar!
     $errores = usuarioVal($nombre, $apellido, $email, $password, $valPassword);
     $numero_aleatorio = 0;
 
-        echo "valido <br>";
+
 
     if (empty($errores)) {
       // No hubo errores
       $errores = usuarioFindMail($email);
 
-      echo "buscó mail <br>";
+
       if(empty($errores)){
         $password = sha1($password);
         // Transformarlo a json
@@ -88,6 +88,49 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
     }
 }
 
+function usuarioTransfer($nombre, $apellido, $email, $password){
+
+	$errores = usuarioFindMail($email);
+
+
+	// echo 'errores busqueda : ' . $errores  . '<br>';
+	if(empty($errores)){
+    // Validar!
+    $numero_aleatorio = 0;
+    $remember         = 0;
+		$extImagen= '';
+		$cookie = 0;
+
+    $usuario = 'root';
+    $contraseña = 'root';
+    $db = new PDO('mysql:host=localhost;port=3307;dbname=smartready', $usuario, $contraseña);
+    $db->beginTransaction();
+
+    try{
+      // 1* Buscar el usuario
+
+      $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
+
+			$statement->bindParam(':name', $nombre,PDO::PARAM_STR);
+			$statement->bindParam(':lastname', $apellido,PDO::PARAM_STR);
+			$statement->bindParam(':email', $email,PDO::PARAM_STR);
+			$statement->bindParam(':password', $password, PDO::PARAM_STR);
+			$statement->bindParam(':remember', $remember, PDO::PARAM_INT);
+			$statement->bindParam(':cookie_rnd', $cookie, PDO::PARAM_INT);
+			$statement->bindParam(':extImagen', $extImagen,PDO::PARAM_STR);
+
+      $statement->execute();
+      $db->commit();
+    } catch (PDOException $e) {
+
+      $db->rollBack();
+      // echo $ex->getMessage();
+    }
+
+    return 1;
+	}
+}
+
 function usuarioFindMail($mail){
   	$errores = [];
   if (!empty($mail) )
@@ -95,7 +138,7 @@ function usuarioFindMail($mail){
     // Se informó el mail
 
     // buscar archivo json.. recorrerlo hasta encontrar mail.
-	 echo "usuarioFindMail - entró <br>";
+	 // echo "usuarioFindMail - entró <br>";
     $usuario = 'root';
     $contraseña = 'root';
 
@@ -106,11 +149,11 @@ function usuarioFindMail($mail){
       // 1* Buscar el usuario
       $statement = $db->prepare("SELECT id,name,lastname,email,password FROM USER WHERE email=:email");
 
-      $statement->bindParam(':email', $email);
+      $statement->bindParam(':email', $mail);
 
       $statement->execute();
 
-  	 echo "usuarioFindMail - ejecutó <br>";
+  	 //echo "usuarioFindMail - ejecutó <br>";
 
       if($statement->rowCount()>0){
         $errores['email'] = 'Ya existe una cuenta con este email';
@@ -122,7 +165,7 @@ function usuarioFindMail($mail){
 
     } catch(PDOException $ex){
 
-      echo $ex->getMessage();
+      // echo $ex->getMessage();
     }
 		/*
     $filecuentas = @fopen("accountUser.json", "r");
@@ -195,7 +238,7 @@ function usuarioAccess($mail,$password)  {
 	 		}
 		} catch (Exception $ex )
 		{
-			echo $ex->getMessage();
+			// echo $ex->getMessage();
 			return 0 ;
 		}
 
@@ -211,7 +254,7 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $mensajetipo = "";
     $mensajetexto= [];
 
-    echo "UsuarioVal->entro <br>";
+    // echo "UsuarioVal->entro <br>";
     if ( $password <> $valPassword){
         $mensajetexto[] = 'La clave no coincide con la validación';
     }
@@ -237,14 +280,14 @@ function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
 
      if (count($mensajetexto) > 0 ) {
 
-      echo "UsuarioVal->incorrecto <br>";
+      // echo "UsuarioVal->incorrecto <br>";
       var_dump($mensajetexto);
 
       mensaje('incorrecto', $mensajetexto);
       $errores = "Error!";
     }
 
-    echo "UsuarioVal->correcto <br>";
+    // echo "UsuarioVal->correcto <br>";
     return $errores;
  }
 

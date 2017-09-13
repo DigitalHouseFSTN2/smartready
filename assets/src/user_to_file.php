@@ -1,5 +1,5 @@
 <?php
-echo 'soy user_to_file.php';
+
 
 require_once "validate.php";
 require_once "messages.php";
@@ -86,7 +86,7 @@ function usuarioFindMail($mail){
     if ($filecuentas) {
       while (($linea = fgets($filecuentas, 4096)) !== false) {
         $regUsuario = json_decode($linea, true);
-				
+
         if (trim($regUsuario['email']) == trim($mail))
         {
           $errores['email'] = 'Ya existe una cuenta con este email';
