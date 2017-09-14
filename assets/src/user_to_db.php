@@ -47,7 +47,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
         try{
           // 1* Buscar el usuario
 					$extImagen= '';
-					$cookie = 0;
+					$cookie = $numero_aleatorio;
 
           $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
 
@@ -88,18 +88,11 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
     }
 }
 
-function usuarioTransfer($nombre, $apellido, $email, $password){
+function usuarioTransfer($nombre, $apellido, $email, $password,$remember,$cookie,$extImagen){
 
 	$errores = usuarioFindMail($email);
 
-
-	// echo 'errores busqueda : ' . $errores  . '<br>';
 	if(empty($errores)){
-    // Validar!
-    $numero_aleatorio = 0;
-    $remember         = 0;
-		$extImagen= '';
-		$cookie = 0;
 
     $usuario = 'root';
     $contraseña = 'root';
@@ -109,15 +102,16 @@ function usuarioTransfer($nombre, $apellido, $email, $password){
     try{
       // 1* Buscar el usuario
 
+
       $statement = $db->prepare("INSERT INTO USER (name,lastname,email,password,remember,cookie_rnd,extImagen) VALUES(:name,:lastname,:email,:password,:remember,:cookie_rnd,:extImagen)");
 
-			$statement->bindParam(':name', $nombre,PDO::PARAM_STR);
-			$statement->bindParam(':lastname', $apellido,PDO::PARAM_STR);
-			$statement->bindParam(':email', $email,PDO::PARAM_STR);
-			$statement->bindParam(':password', $password, PDO::PARAM_STR);
-			$statement->bindParam(':remember', $remember, PDO::PARAM_INT);
-			$statement->bindParam(':cookie_rnd', $cookie, PDO::PARAM_INT);
-			$statement->bindParam(':extImagen', $extImagen,PDO::PARAM_STR);
+			$statement->bindParam(':name', $nombre);
+			$statement->bindParam(':lastname', $apellido);
+			$statement->bindParam(':email', $email);
+			$statement->bindParam(':password', $password);
+			$statement->bindParam(':remember', $remember);
+			$statement->bindParam(':cookie_rnd', $cookie);
+			$statement->bindParam(':extImagen', $extImagen);
 
       $statement->execute();
       $db->commit();
@@ -341,6 +335,7 @@ function usuarioGetfile(){
 
 function usuarioUpdPassword($email, $oldPassword, $newPassword, $valPassword){
   $errores = [];
+	$mensajetexto = [];
   // VALIDAR SI NUEVA CLAVE Y VALIDACIÓN SON LO MISMO .. ANTES DE HACER OPERATORIA
   if( $newPassword == $valPassword){
     if (!empty($email) )  {

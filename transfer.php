@@ -1,6 +1,6 @@
 <?php
   require_once "./assets/src/validate.php";
-	require_once "./assets/src/trnansfer_json_to_db.php";
+	require_once "./assets/src/transfer_json_to_db.php";
 	require_once "./assets/src/messages.php";
 
 	Include "./assets/src/datasource.conf";
@@ -20,7 +20,7 @@
 			$rslt = createTable();
 	    $rslt = transferUser();
 	    // echo "<br> resultado usaurioAcces " . $rslt . "<br>";
-	  	header ("Location:home.php");
+	  	 // header ("Location:home.php");
 	} else {
 		$mensajetexto[] = 'No se puede transferir al estar en conexión JSON !';
 		mensaje('incorrecto', $mensajetexto);
@@ -89,7 +89,7 @@
 
 
     <?php // PRESESNTACIÓN DEL SERVICIO
-      include('./assets/src/inc_presentacion.php');
+      include('./assets/src/html_presentation.php');
     ?>
     <aside>
 		  <!-- aside content goes in here -->

@@ -18,7 +18,7 @@ if($data_source=="DBAS"){
 
         $resultado = usuarioUpdPassword($mail, $oldPassword, $newPassword, $valPassword);
         // var_dump($resultado);
-
+				
       }
     //echo "hay datos de session";
   } else {
@@ -57,7 +57,7 @@ if($data_source=="DBAS"){
             <div style="padding-top:30px" class="panel-body" >
               <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
               <!-- Formlario para la gestión de cambio de clave -->
-              <form id="loginform" action='cambioclave.php' method='post' class="form-horizontal" role="form">
+              <form id="loginform" action='updatepassword.php' method='post' class="form-horizontal" role="form">
                   <!-- Se agrega submitted:1 para validar confirmación en browser  -->
                   <input type='hidden' name='submitted' id='submitted' value='1'/>
                   <!-- Declaración de campos de input para cambio de calve -->
