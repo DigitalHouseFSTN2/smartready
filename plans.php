@@ -27,8 +27,8 @@
       ?>
 
       <?php // PRESENTACIÓN DE SERVICIOS
-        include('./assets/src/inc_planes.php');
-        include('./assets/src/inc_presentacion.php');
+        include('./assets/src/html_plans.php');
+        include('./assets/src/html_presentation.php');
   	  ?>
 
   	  <section id="carousel">

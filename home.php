@@ -43,9 +43,9 @@
     ?>
 
     <?php // PRESENTACIÓN DEL SERVICIO
-      include('./assets/src/inc_presentacion.php');
-      include('./assets/src/inc_servicios.php');
-      include('./assets/src/inc_planes.php');
+      include('./assets/src/html_presentation.php');
+      include('./assets/src/html_services.php');
+      include('./assets/src/html_plans.php');
 
     ?>
 
