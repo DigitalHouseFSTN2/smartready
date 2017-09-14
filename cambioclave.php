@@ -1,5 +1,11 @@
 <?php
-  require_once "./assets/src/user_to_db.php";
+include "./assets/src/datasource.conf";
+
+if($data_source=="DBAS"){
+	require_once "./assets/src/user_to_db.php";
+} else {
+	require_once "./assets/src/user_to_file.php";
+}
 
   session_start();
   if(isset($_SESSION['email'])){

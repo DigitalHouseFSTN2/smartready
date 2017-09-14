@@ -1,6 +1,13 @@
 <?php
   require_once "./assets/src/validate.php";
-  require_once "./assets/src/user_to_db.php";
+
+	Include "./assets/src/datasource.conf";
+	// $data_source = getenv("DATA_SOURCE");
+	if($data_source=="DBAS"){
+  	require_once "./assets/src/user_to_db.php";
+	} else {
+		require_once "./assets/src/user_to_file.php";
+	}
 
   $data_source = getenv("DATA_SOURCE");
   //var_dump($data_source);

@@ -1,12 +1,18 @@
 <?php
-  require_once "./assets/src/user_to_file.php";
+	include "./assets/src/datasource.conf";
+
+	if($data_source=="DBAS"){
+  	require_once "./assets/src/user_to_db.php";
+	} else {
+		require_once "./assets/src/user_to_file.php";
+	}
 
   session_start();
 
   $fueCompletado = isset($_REQUEST['submitted']);
 
   if($fueCompletado){
-	  echo "register.php completado"; 
+	  // echo "register.php completado";
      $resultado = usuarioSet($_REQUEST['username'],$_REQUEST['lastname'],$_REQUEST['email'],$_REQUEST['password'],$_REQUEST['repassword'],$_REQUEST['remember'] );
 
      if( $resultado) {
