@@ -26,7 +26,7 @@
                 echo '<li><a href="register.php">Registracion</a></li>';
               } else {
                 echo '<li><a href="user.php">Usuario</a></li>';
-                echo '<li><a href="cambioclave.php">Cambio de clave</a></li>';
+                echo '<li><a href="updatepassword.php">Cambio de clave</a></li>';
               }
             ?>
           </ul>

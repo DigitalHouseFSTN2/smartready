@@ -13,14 +13,14 @@
 		    try{
 		      // 1* Buscar el usuario
 
-		      $statement = $db->prepare("CREATE TABLE user (id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,name VARCHAR(100) NULL, lastname VARCHAR(100) NULL,email VARCHAR(200) NOT NULL, password VARCHAR(128) NOT NULL, remember TINYINT UNSIGNED DEFAULT 0 NOT NULL, cookie_rnd TINYINT UNSIGNED DEFAULT 0 NOT NULL, extImagen CHAR(4) NULL
+		      $statement = $db->prepare("CREATE TABLE user (id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,name VARCHAR(100) NULL, lastname VARCHAR(100) NULL,email VARCHAR(200) NOT NULL, password VARCHAR(128) NOT NULL, remember TINYINT UNSIGNED DEFAULT 0 NOT NULL, cookie_rnd INT UNSIGNED DEFAULT 0 NOT NULL, extImagen CHAR(4) NULL
 					);");
 
 
 		      $statement->execute();
 		      $db->commit();
 		    } catch (PDOException $e) {
-					echo $e->getMessage; 
+					echo $e->getMessage;
 		      $db->rollBack();
 		      // echo $ex->getMessage();
 		    }
@@ -41,10 +41,10 @@
 
       	// echo "Linea" . $linea . '<br>' ;
 	      $regUsuario = json_decode($linea, true);
-				$resultado = usuarioTransfer($regUsuario["name"],  $regUsuario["lastname"], $regUsuario["email"], $regUsuario['password']);
+		
+				$resultado = usuarioTransfer($regUsuario["name"],  $regUsuario["lastname"], $regUsuario["email"], $regUsuario['password'],$regUsuario["remember"],$regUsuario["cookie_rnd"],$regUsuario["extImagen"]);
 
-	          // Falta interpretar la linea como json y tomar el dato de mail para validar que sea el mismo ..
-	          // luego comparar con la clave.
+
 	    }
 
       if (!feof($filecuentas)) {

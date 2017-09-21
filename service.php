@@ -26,8 +26,8 @@
       ?>
 
     <?php // PRESENTACIÓN DEL SERVICIO
-      include('./assets/src/inc_servicios.php');
-      include('./assets/src/inc_presentacion.php');
+      include('./assets/src/html_services.php');
+      include('./assets/src/html_presentation.php');
     ?>
 	  <section id="carousel">
 		  <div id="myCarousel" class="carousel slide" data-ride="carousel">

@@ -56,10 +56,10 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
        if ($remember == 1) {
         setcookie("id_usuario", $nombre.$apellido , time()+(60*60*24*365));
         setcookie("marca_aleatoria_usuario", $numero_aleatorio, time()+(60*60*24*365));
-      }
+      	}
 
-        //$mensajetexto = 'Registro agregado exitosamente !';
-        //mensaje('correcto', $mensajetexto);
+        $mensajetexto = 'Registro agregado exitosamente !';
+        mensaje('correcto', $mensajetexto);
 
         $_SESSION["name"] = $nombre;
         $_SESSION["email"] = $email;
@@ -70,6 +70,7 @@ function usuarioSet($nombre, $apellido, $email, $password, $valPassword, $rememb
 
       } else {
       // Hubo errores
+				mensaje('incorecto', $errores);
         return 0;
       }
     }
@@ -217,7 +218,7 @@ function usuarioAccess($mail,$password)  {
 function usuarioVal($nombre, $apellido, $email, $password, $valPassword){
     $errores = [];
     $mensajetipo = "";
-    $mensajetexto= "";
+    $mensajetexto = [];
 
     if ( $password <> $valPassword){
         $mensajetexto[] = 'La clave no coincide con la validación';
